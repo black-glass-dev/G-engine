@@ -79,11 +79,13 @@ jobs:
         run: |
           cp android/icon.png build/icon.png
           cp docs/images/lit.jpg build/game.jpg
+          cp docs/images/download.jpg build/download.jpg
           TAG=android-latest
           if gh release view "$TAG" > /dev/null 2>&1; then
-            gh release upload "$TAG" build/g-engine.apk build/icon.png build/game.jpg --clobber
+            gh release upload "$TAG" build/g-engine.apk build/icon.png build/game.jpg build/download.jpg --clobber
+            gh release edit "$TAG" --notes-file android/RELEASE_NOTES.md
           else
-            gh release create "$TAG" build/g-engine.apk build/icon.png build/game.jpg \
+            gh release create "$TAG" build/g-engine.apk build/icon.png build/game.jpg build/download.jpg \
               --title "Android টেস্ট বিল্ড — G-engine ডেমো" \
               --notes-file android/RELEASE_NOTES.md \
               --target "$GITHUB_SHA"

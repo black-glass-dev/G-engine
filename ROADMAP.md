@@ -23,8 +23,9 @@
   কিছু বাক্য-গঠন চেনে। সুবিধা: ইন্টারনেট লাগে না, ফোনে মুহূর্তে চলে, একই বাক্যের ফল সবসময় একই। সীমা: শব্দভাণ্ডারের
   বাইরের বাক্য বুঝবে না — তখন সে চুপ করে ভুল কিছু করে না, বাংলায় বলে দেয় কোন শব্দটা বোঝেনি এবং কাছাকাছি শব্দ প্রস্তাব করে।
 - Unity/Godot এর মতো পূর্ণাঙ্গ ইঞ্জিন একজনের পক্ষে এক ধাপে হয় না। তাই পরিসর ইচ্ছা করে ছোট রাখা: **2D, মোবাইল-প্রথম**।
-- Android APK এই স্যান্ডবক্সে বানানো বা চালিয়ে দেখা যায় না (Android SDK/NDK নামানো যায় না)। সেটা ধাপ ২ এ GitHub Actions
-  দিয়ে হবে এবং প্রথম APK আপনার ফোনে আপনাকেই পরীক্ষা করতে হবে।
+- Android APK এই স্যান্ডবক্সে বানানো বা চালিয়ে দেখা যায় না (Android SDK/NDK নামানো যায় না)। বদলে GitHub Actions-এ NDK দিয়ে
+  বানানো হয় — এখন সেটা কাজ করছে, প্রতিটা push-এ টেস্ট চলে আর সই-করা APK
+  [Releases](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)-এ জমা হয়। ফোনে চালিয়ে দেখা আপনাকেই করতে হবে।
 - ব্রাউজারের পরীক্ষা চলে পর্দাহীন (headless) Chromium-এ — সফটওয়্যার রেন্ডারিং আর ফোনের অনুকরণ দিয়ে। তাতে প্রমাণ হয় ছবি ঠিক
   আসে আর টাচ-বোতাম কাজ করে; ফোনে কত দ্রুত চলবে তা প্রমাণ হয় না।
 
@@ -98,15 +99,17 @@
 - **সম্পন্ন যখন:** ব্রাউজারে `ডান বোতাম চাপলে ডানে হাঁটো` লিখে চালালে চরিত্র ডানে হাঁটে, আর আলো-ছায়া পর্দায় দেখা যায় — কম্পিউটারে
   (✅ হয়েছে) এবং একটা আসল ফোনে (⬜ বাকি)
 
-### ধাপ ২ — Android APK (M) ⬜
+### ধাপ ২ — Android APK (M) 🟡
 লক্ষ্য: একই খেলা ফোনে native অ্যাপ হিসেবে চলবে।
-- ⬜ `engine/platform/android`: GameActivity + EGL + GLES 3.0, টাচ ইনপুট, pause/resume, পর্দা ঘোরানো
-- ⬜ `android/` Gradle প্রজেক্ট (arm64-v8a + armeabi-v7a), অ্যাসেট প্যাকেজিং
-- ⬜ GitHub Actions: প্রতিটা push এ টেস্ট চালানো + debug APK বানিয়ে ডাউনলোডের জন্য রাখা
+- ✅ `engine/platform/android`: NativeActivity + EGL + GLES 3, টাচ ও কীবোর্ড ইনপুট (বাঁ-ডান, লাফ, অ্যাকশন), ল্যান্ডস্কেপ — লেখা হয়েছে,
+  কিন্তু কোনো আসল ডিভাইসে চলতে দেখা হয়নি
+- ✅ `android/`: Gradle ছাড়াই প্যাকেজিং — manifest, আপাতত আইকন, aapt2 + apksigner দিয়ে সই-করা APK। এখন শুধু arm64-v8a; armeabi-v7a বাকি
+- ✅ GitHub Actions: প্রতিটা push-এ টেস্ট চলে, তারপর APK বানে আর [`android-latest` রিলিজে](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest) জমা হয়
+- ⬜ ফোনে টেপ করে ইনস্টল করে চালানো — এটা আপনাকে করতে হবে: APK নামিয়ে ইনস্টল করুন, জানান ঠিকমতো চলে কি না আর কতটা মসৃণ
 - 🟡 মান-স্তর: ওয়েব প্লেয়ারে পাঁচটা স্তর আছে (ছবির ও আলোর রেজোলিউশন), ধীর চললে নিজে থেকে এক ধাপ নামে — লেখা আছে, কিন্তু
   আসল ফোনে কাজ করতে দেখা হয়নি। বাকি: Android অ্যাপে একই ব্যবস্থা, আর আসল ফোনে মেপে সীমাগুলো ঠিক করা
-- **সম্পন্ন যখন:** আপনি GitHub থেকে APK নামিয়ে ফোনে ইনস্টল করে খেলাটা ৩০+ FPS এ চালাতে পারবেন
-- **ঝুঁকি:** এখান থেকে যাচাই করা যায় না; প্রথম ২–৩ বার CI ব্যর্থ হওয়া স্বাভাবিক — আপনার ফোনের ফলাফল জানাতে হবে
+- **সম্পন্ন যখন:** আপনি GitHub থেকে APK নামিয়ে ফোনে ইনস্টল করে খেলাটা ৩০+ FPS এ চালাতে পারবেন (নামানো-ইনস্টল ✅; ৩০+ FPS ⬜ বাকি)
+- **ঝুঁকি:** ফোনের গতি এখান থেকে যাচাই করা যায় না। প্ল্যাটফর্ম-স্তরটা পাতলা — ভাষা, খেলার নিয়ম ও ফিজিক্স PC-তে পরীক্ষিত, রেন্ডারার ব্রাউজারে; APK-টা এখনো কোনো আসল ফোনে চলেনি — আপনার ফোনের ফলাফল জানাতে হবে
 
 ### ধাপ ৩ — ফোনে এডিটর (L) ⬜
 লক্ষ্য: কোড না ছুঁয়ে, শুধু ফোন দিয়ে একটা লেভেল বানানো।
@@ -196,8 +199,9 @@ real phone so far, which is why the last box of phase 1 is still empty.
   the engine does not silently do something wrong; it says which word it did not understand and suggests a close one.
 - A complete engine like Unity or Godot is not a one-step job for one person. The scope is deliberately small:
   **2D, mobile first**.
-- An Android APK cannot be built or run in this sandbox (the Android SDK/NDK cannot be downloaded here). That is
-  phase 2, through GitHub Actions, and the first APK has to be tried by you on your phone.
+- An Android APK cannot be built or run in this sandbox (the Android SDK/NDK cannot be downloaded here). Instead GitHub
+  Actions builds it with the NDK — that now works, and every push publishes a signed APK to the releases. Trying it on a
+  phone is still up to you.
 - The browser test runs in headless Chromium, with software rendering and phone emulation. It proves that the
   picture is right and that the touch buttons work; it does not prove how fast a phone will run it.
 
@@ -275,15 +279,21 @@ lighting and physics.
 - **Done when:** typing `ডান বোতাম চাপলে ডানে হাঁটো` in the browser and running it makes the character walk right, with lighting and
   shadows on screen — on a computer (✅ done) and on a real phone (⬜ to do)
 
-### Phase 2 — Android APK (M) ⬜
+### Phase 2 — Android APK (M) 🟡
 Goal: the same game runs on a phone as a native app.
-- ⬜ `engine/platform/android`: GameActivity + EGL + GLES 3.0, touch input, pause/resume, rotation
-- ⬜ `android/` Gradle project (arm64-v8a + armeabi-v7a), asset packaging
-- ⬜ GitHub Actions: run the tests on every push + build a debug APK as a downloadable artifact
+- ✅ `engine/platform/android`: NativeActivity + EGL + GLES 3, touch and key input (left, right, jump, action), landscape —
+  written, but never run on a real device
+- ✅ `android/`: packaging without Gradle — manifest, a temporary icon, a signed APK through aapt2 + apksigner.
+  arm64-v8a only for now; armeabi-v7a to do
+- ✅ GitHub Actions: the tests run on every push, then an APK is built and published to the
+  [`android-latest` release](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
+- ⬜ Installed and played on a phone — this one needs you: download the APK, install it, and tell me whether it works and
+  how smooth it is
 - 🟡 Quality levels: the web player has five (picture and light resolution) and steps down by itself when it runs slowly —
   written, but never seen working on a real phone. To do: the same in the Android app, and tuning the thresholds on real phones
-- **Done when:** you can download the APK from GitHub, install it and play the game at 30+ FPS
-- **Risk:** cannot be verified from here; the first 2–3 CI runs failing is normal — I will need the results from your phone
+- **Done when:** you can download the APK from GitHub, install it and play the game at 30+ FPS (download & install ✅; 30+ FPS ⬜ to do)
+- **Risk:** phone speed cannot be verified from here. The platform layer is thin — the language, game rules and physics are
+  tested on a PC, the renderer in a browser; the APK has not yet run on a real phone — I will need the results from your phone
 
 ### Phase 3 — Editor on the phone (L) ⬜
 Goal: build a level with nothing but a phone, without touching code.

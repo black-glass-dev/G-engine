@@ -9,7 +9,7 @@
 | ![আলো-ছায়া চালু](docs/images/lit.jpg) | ![আলো-ছায়া বন্ধ](docs/images/unlit.jpg) |
 
 > **অবস্থা:** একেবারে শুরুর দিক — [রোডম্যাপের](ROADMAP.md) ধাপ ১ (প্রথম চলন্ত নমুনা)। এখন ব্রাউজারে চলে।
-> Android অ্যাপ (APK) এখনো বানানো হয়নি, আর কোনো আসল ফোনে এখনো চালিয়ে দেখা হয়নি।
+> Android অ্যাপ (APK)-এর টেস্ট বিল্ড [রিলিজে](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest) রাখা আছে; কোনো আসল ফোনে চালিয়ে দেখা এখনো হয়নি।
 
 ---
 
@@ -40,6 +40,18 @@ python3 tools/serve.py    # ঠিকানা দেখাবে: http://localh
 - **ফোনে:** ফোন একই Wi-Fi-তে থাকলে `serve.py` যে দ্বিতীয় ঠিকানাটা দেখায় সেটা ফোনের ব্রাউজারে খুলুন।
 - **খেলা:** ← → হাঁটা, Space লাফ, E অ্যাকশন; ফোনে পর্দার বোতাম।
 - `web/g-engine.wasm` একটা build-ফল, তাই git-এ রাখা হয়নি। build-এর পর `web/` ফোল্ডারটা যেকোনো static হোস্টে তুলে দিলেই চলে।
+
+## Android APK (টেস্ট বিল্ড)
+
+[![ডাউনলোডের পদ্ধতি](docs/images/download.jpg)](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
+
+**ডাউনলোড: [`g-engine.apk`](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/g-engine.apk)** — [রিলিজ পেজ](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)। GitHub Actions প্রতিটা push-এ টেস্ট চালিয়ে নতুন APK বানায় ওই রিলিজে জমা দেয়।
+
+1. উপরের ছবির মতো **Assets** থেকে `g-engine.apk` নামান।
+2. ফোনে ফাইলটা খুলে ইনস্টল করুন ("অজানা উৎস" এর অনুমতি চাইলে দিন)।
+3. **G-engine** চালু করুন — বাঁ পাশে হাঁটা, ডান পাশে লাফ ও অ্যাকশন (ল্যান্ডস্কেপে চলবে)।
+
+সীমা: শুধু arm64-v8a ফোন (Android 7+); প্রতিটা বিল্ড নতুন করে সই করা — নতুনটা দিতে চাইলে আগেরটা আনইনস্টল করুন; আইকন আপাতত। ফোনে কতটা মসৃণ চলে সেটা এখনো মাপা হয়নি — জানালে কাজে লাগবে।
 
 ## প্রথম কয়েকটা বাক্য
 
@@ -113,7 +125,7 @@ Android অ্যাপ · শব্দ ও সংগীত · নিজের �
 # English
 
 > **Status:** very early — phase 1 of the [roadmap](ROADMAP.md) (the first playable slice). It runs in the browser today.
-> The Android app (APK) has not been built yet, and nothing has been run on a real phone so far.
+> A test build of the Android app (APK) sits in the [releases](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest); nothing has been run on a real phone so far.
 
 ## What is here
 
@@ -136,6 +148,18 @@ python3 tools/serve.py    # prints the address: http://localhost:8080
 - **On a phone:** with the phone on the same Wi-Fi, open the second address that `serve.py` prints.
 - **Playing:** ← → walk, Space jump, E action; on a phone, the on-screen buttons.
 - `web/g-engine.wasm` is a build product and therefore not in git. After building, the `web/` folder can be copied to any static host.
+
+## Android APK (test build)
+
+[![How to download](docs/images/download.jpg)](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
+
+**Download: [`g-engine.apk`](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/g-engine.apk)** — [release page](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest). GitHub Actions runs the tests and publishes a fresh APK to that release on every push.
+
+1. As in the picture above, download `g-engine.apk` from **Assets**.
+2. Open the file on the phone and install it (allow "unknown sources" if asked).
+3. Start **G-engine** — walk with the left side, jump and action on the right (it runs in landscape).
+
+Limits: arm64-v8a phones only (Android 7+); every build is freshly signed, so uninstall the old one before installing a newer build; the icon is temporary. How smoothly it runs on a phone is still unmeasured — telling me helps.
 
 ## First sentences
 
