@@ -149,6 +149,22 @@ public:
     // ---- access (tests, editor) ----
     const std::vector<Object>& objects() const { return objects_; }
     const Object* player() const { return player_ >= 0 ? &objects_[static_cast<std::size_t>(player_)] : nullptr; }
+
+    /// Objects in the scene (for editors and tools): what is where, and how it glows.
+    struct ObjectView {
+        i32 id = -1;
+        std::string key;
+        Vec2 pos;
+        bool light = false;
+        f32 lightRadius = 0;
+        f32 lightIntensity = 0;
+        Color lightColor{1, 1, 1, 1};
+    };
+    void objectViews(std::vector<ObjectView>& out) const;
+    /// The object at a world point (tap-to-select in editors); -1 when there is none.
+    i32 objectAt(Vec2 point) const;
+    /// Light properties of one object — an editor changes them (used for lamps).
+    bool setLight(i32 id, Color color, f32 radius, f32 intensity);
     const Object* find(const std::string& name) const;
     int width() const { return width_; }
     int height() const { return height_; }

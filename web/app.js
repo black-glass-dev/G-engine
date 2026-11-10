@@ -9,7 +9,7 @@ const $ = (id) => document.getElementById(id);
 // ---- words of the page, in two languages -------------------------------------------------
 const strings = {
   bn: {
-    tagline: 'নিজের গেম বানানোর ইঞ্জিন — লেভেল এঁকে, সহজ বাংলা বা ইংরেজি বাক্যে নিয়ম লিখে',
+    tagline: 'গেম ইঞ্জিন — দৃশ্য বানান, বস্তু বসান, নিয়ম লিখুন, খেলুন — ফোনেই',
     other: 'English',
     score: 'স্কোর',
     jump: 'লাফ',
@@ -20,8 +20,8 @@ const strings = {
     again: 'আবার খেলো',
     won: 'জিতে গেছ!',
     lost: 'খেলা শেষ',
-    editorTitle: 'এখানেই আপনার গেম',
-    editorLead: '«লেভেল বানাও» ট্যাবে মানচিত্র এঁকে জিনিস বসান, «আচরণ লেখো» ট্যাবে প্রতিটা জিনিসের নিয়ম লিখুন। বাংলা আর ইংরেজি — দুটোই চলে, আর উপরের পর্দায় সাথে সাথে ফল দেখা যায়।',
+    editorTitle: 'ওয়ার্কস্পেস',
+    editorLead: 'উপরে দৃশ্য, নিচে সম্পাদনা। «দৃশ্য»-তে বস্তু বসান ও তার বৈশিষ্ট্য বদলান, «আচরণ»-এ নিয়ম লিখুন, «প্লে»-তে খেলুন। বাংলা ও ইংরেজি — দুটোই চলে।',
     run: 'চালাও',
     reset: 'আগের মতো করো',
     understood: 'ইঞ্জিন যা বুঝেছে',
@@ -36,7 +36,7 @@ const strings = {
     noWebgl: 'এই ব্রাউজারে WebGL2 নেই, তাই গেমের ছবি আঁকা যাচ্ছে না।',
     noWasm: 'ইঞ্জিনের ফাইল (g-engine.wasm) পাওয়া যায়নি। আগে tools/build_web.sh চালাও।',
     failed: 'ইঞ্জিন চালু করা গেল না। বিস্তারিত ব্রাউজারের কনসোলে আছে।',
-    footer: 'G-Engine — C++ ইঞ্জিন (WebAssembly), নিজস্ব আলো-ছায়ার রেন্ডারার, Box2D পদার্থবিদ্যা, আর «কথা» ভাষা। এই পাতায় যা চলছে, অ্যান্ড্রয়েডেও সেই একই কোড চলবে। আপনার খেলা ব্রাউজারে সংরক্ষিত থাকে; .json ফাইলে নামিয়ে বাঁধানো বা আবার লোড করা যায়।',
+    footer: 'G-Engine — গেম ইঞ্জিন: C++ (WebAssembly), নিজস্ব আলো-ছায়ার রেন্ডারার, Box2D পদার্থবিদ্যা, আর «কথা» ভাষা। এই একই ইঞ্জিন ফোনের অ্যাপে ও এজেন্টদের কমান্ড-লাইনে চলে। প্রজেক্ট ব্রাউজারে সংরক্ষিত থাকে; .json ফাইলে নামিয়ে বা লোড করা যায়।',
     labels: { left: 'বামে', right: 'ডানে', jump: 'লাফ', action: 'অ্যাকশন' },
     newGame: 'নতুন খেলা',
     loadSample: 'নমুনা খেলা',
@@ -48,7 +48,26 @@ const strings = {
     loaded: 'লোড হলো',
     badFile: 'ফাইলটা পড়া গেল না',
     levelTab: 'লেভেল বানাও',
-    behaviorTab: 'আচরণ লেখো',
+    sceneTab: 'দৃশ্য',
+    behaviorTab: 'আচরণ',
+    playTab: 'প্লে',
+    play: 'চালাও ▶',
+    stop: 'থামাও ■',
+    projects: 'প্রজেক্ট',
+    close: 'বন্ধ করো',
+    rename: 'নাম বদলাও',
+    projectName: (n) => `প্রজেক্ট ${n}`,
+    noProjects: 'এখনো কোনো প্রজেক্ট সংরক্ষণ করা হয়নি।',
+    sceneLead: 'বস্তুর উপর টেপে সেটাকে বেছে নিন — নিচে তার বৈশিষ্ট্য দেখা যাবে। খালি ঘরে টেপে ব্রাশ দিয়ে নতুন বস্তু বসান; বস্তু টেনে সরানো যায়।',
+    playLead: '«চালাও» চাপলে দৃশ্যটা শুরু থেকে খেলা হবে; «থামাও» চাপলে আবার সম্পাদনার অবস্থায় ফিরে যাবেন।',
+    playHint: 'বোতাম বা কীবোর্ড চাপলেই খেলা নিজে থেকে শুরু হয়।',
+    thing: 'জিনিস',
+    position: 'অবস্থান',
+    remove: 'মুছো',
+    duplicate: 'কপি করো',
+    lampColor: 'আলোর রং',
+    lampRadius: 'ব্যাসার্ধ',
+    lampIntensity: 'তীব্রতা',
     levelLead: 'ট্যাপ বা ড্র্যাগ করে মানচিত্র এঁকুন — দেয়াল, কয়েন, বাতি, দরজা… উপরের পর্দায় সাথে সাথে দেখা যাবে।',
     levelText: 'লেভেলের ছবি (সরাসরিও লিখতে পারেন)',
     levelHint: 'প্রতিটা ঘর ১×১ মিটার। খেলোয়াড় P একটাই থাকবে — নতুন P বসালে আগেরটা সরে যায়।',
@@ -56,7 +75,7 @@ const strings = {
     names: {},
   },
   en: {
-    tagline: 'Your game-making engine — draw a level, write the rules in plain Bengali or English',
+    tagline: 'A game engine — build a scene, place objects, write the rules, play — on your phone',
     other: 'বাংলা',
     score: 'Score',
     jump: 'Jump',
@@ -67,8 +86,8 @@ const strings = {
     again: 'Play again',
     won: 'You won!',
     lost: 'Game over',
-    editorTitle: 'Make your game here',
-    editorLead: 'Draw the map in the “Build the level” tab and write what each thing does in the “Write behaviour” tab. Both Bengali and English work, and the screen above shows the result right away.',
+    editorTitle: 'Workspace',
+    editorLead: 'The scene is above, the editing below. Place objects and set their properties in “Scene”, write rules in “Behaviour”, play in “Play”. Bengali and English both work.',
     run: 'Run',
     reset: 'Restore original',
     understood: 'What the engine understood',
@@ -83,7 +102,7 @@ const strings = {
     noWebgl: 'This browser has no WebGL2, so the game cannot be drawn.',
     noWasm: 'The engine file (g-engine.wasm) is missing. Run tools/build_web.sh first.',
     failed: 'The engine could not start. Details are in the browser console.',
-    footer: 'G-Engine — a C++ engine (WebAssembly), its own lighting renderer, Box2D physics and the "Kotha" language. The code running on this page is the same code that runs on Android. Your game stays saved in the browser; download it as a .json file to share or load it back.',
+    footer: 'G-Engine — a game engine: C++ (WebAssembly), its own lighting renderer, Box2D physics and the "Kotha" language. The same engine runs in the phone app and in the agents\u2019 command line. Projects stay saved in the browser; download or load them as .json files.',
     labels: { left: 'Left', right: 'Right', jump: 'Jump', action: 'Action' },
     newGame: 'New game',
     loadSample: 'Sample game',
@@ -95,7 +114,26 @@ const strings = {
     loaded: 'Loaded',
     badFile: 'That file could not be read',
     levelTab: 'Build the level',
-    behaviorTab: 'Write behaviour',
+    sceneTab: 'Scene',
+    behaviorTab: 'Behaviour',
+    playTab: 'Play',
+    play: 'Play ▶',
+    stop: 'Stop ■',
+    projects: 'Projects',
+    close: 'Close',
+    rename: 'Rename',
+    projectName: (n) => `Project ${n}`,
+    noProjects: 'Nothing is saved yet.',
+    sceneLead: 'Tap an object to select it — its properties appear below. Tap an empty cell with a brush to place one; drag an object to move it.',
+    playLead: '“Play” runs the scene from its beginning; “Stop” returns to the editing state.',
+    playHint: 'Pressing any button or key starts the game by itself.',
+    thing: 'Thing',
+    position: 'Position',
+    remove: 'Delete',
+    duplicate: 'Duplicate',
+    lampColor: 'Light colour',
+    lampRadius: 'Radius',
+    lampIntensity: 'Intensity',
     levelLead: 'Tap or drag to draw the map — walls, coins, lamps, a door… The screen above shows it right away.',
     levelText: 'The level picture (you can also type it)',
     levelHint: 'Each cell is 1×1 meter. There is only one player P — placing a new one removes the old.',
@@ -127,7 +165,9 @@ function applyLanguage() {
   for (const el of document.querySelectorAll('[data-t]')) el.textContent = t(el.dataset.t);
   for (const el of document.querySelectorAll('[data-label]')) el.setAttribute('aria-label', t('labels')[el.dataset.label]);
   $('lang').textContent = t('other');
+  $('play-toggle').textContent = mode === 'play' ? t('stop') : t('play');
   renderPalette();
+  renderInspector();
   if (engine) {
     renderTabs();
     renderNotes();
@@ -199,7 +239,7 @@ const keyMap = {
   ArrowDown: ['down'], KeyS: ['down'],
   KeyE: ['action'], Enter: ['action'],
 };
-const typing = (target) => target instanceof HTMLElement && (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT' || target.tagName === 'BUTTON' || target.tagName === 'SELECT');
+const typing = (target) => target instanceof HTMLElement && (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT' || target.tagName === 'SELECT');
 
 window.addEventListener('keydown', (event) => {
   const names = keyMap[event.code];
@@ -421,6 +461,7 @@ code.addEventListener('keydown', (event) => {
 });
 
 function run() {
+  ensurePlay();
   clearTimeout(checkTimer);
   const script = scripts[current];
   script.draft = code.value;
@@ -458,6 +499,7 @@ const brushes = [
 ];
 const cellClass = (ch) => { const b = brushes.find((x) => x.ch === ch); return b ? b.cls : ''; };
 const cellLabel = (ch) => ('PGc^BDL'.includes(ch) ? ch : '');
+const kindName = (ch) => t('brushes')[ch] || ch;
 let demoLevel = '';
 let demoScripts = [];
 let levelRows = [];
@@ -466,6 +508,12 @@ let painting = false;
 let painted = '';
 let applyTimer = 0;
 let toastTimer = 0;
+
+// The workspace state: which project is open, is the scene running, which object is selected.
+let mode = 'edit';          // 'edit' — the scene sits at its start state; 'play' — the game runs
+let projectName = '';
+let selection = null;       // {r, c, ch} — the object under inspection
+let props = {};             // 'r,c' -> {color, radius, intensity} — settings of single objects
 
 function toast(text) {
   const el = $('toast');
@@ -481,7 +529,78 @@ function parseLevel(text) {
 }
 
 const levelText = () => levelRows.join('\n') + '\n';
+const charAt = (r, c) => (levelRows[r] || '')[c] || '.';
 
+// ---- play mode ------------------------------------------------------------------------------
+function setMode(next) {
+  if (mode === next) return;
+  mode = next;
+  if (engine) engine.restart();   // play starts from the beginning; stop returns to it
+  $('play-toggle').textContent = next === 'play' ? t('stop') : t('play');
+  $('play-toggle').classList.toggle('on', next === 'play');
+}
+function ensurePlay() { setMode('play'); }
+
+// ---- projects -------------------------------------------------------------------------------
+function projectsStore() {
+  try { return JSON.parse(localStorage.getItem('ge-projects')) || { list: [], current: '' }; }
+  catch { return { list: [], current: '' }; }
+}
+function writeProjects(store) {
+  try { localStorage.setItem('ge-projects', JSON.stringify(store)); } catch { /* full */ }
+}
+function saveProject() {
+  const store = projectsStore();
+  const state = gameState();
+  const entry = { name: projectName, state, savedAt: Date.now() };
+  const at = store.list.findIndex((x) => x.name === projectName);
+  if (at >= 0) store.list[at] = entry; else store.list.push(entry);
+  store.current = projectName;
+  writeProjects(store);
+  try { localStorage.setItem('ge-game', JSON.stringify(state)); } catch { /* full */ }
+  $('project-name').textContent = projectName;
+}
+function renderProjectsSheet() {
+  const store = projectsStore();
+  const list = $('projects-list');
+  list.replaceChildren(...store.list.map((entry) => {
+    const row = document.createElement('div');
+    row.className = 'project-row' + (entry.name === projectName ? ' active' : '');
+    const open = document.createElement('button');
+    open.type = 'button';
+    open.className = 'chip';
+    open.textContent = entry.name;
+    open.addEventListener('click', () => {
+      if (loadGameState(entry.state)) {
+        projectName = entry.name;
+        $('project-name').textContent = projectName;
+        $('projects-sheet').hidden = true;
+        applyLanguage();
+        toast(t('loaded'));
+      }
+    });
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'ghost';
+    del.textContent = t('remove');
+    del.addEventListener('click', () => {
+      const fresh = projectsStore();
+      fresh.list = fresh.list.filter((x) => x.name !== entry.name);
+      writeProjects(fresh);
+      renderProjectsSheet();
+    });
+    row.append(open, del);
+    return row;
+  }));
+  if (!store.list.length) {
+    const none = document.createElement('p');
+    none.className = 'hint';
+    none.textContent = t('noProjects');
+    list.append(none);
+  }
+}
+
+// ---- the scene picture -----------------------------------------------------------------------
 function renderPalette() {
   $('palette').replaceChildren(...brushes.map((b) => {
     const button = document.createElement('button');
@@ -517,7 +636,11 @@ function renderGrid() {
   grid.style.setProperty('--cols', cols);
   const cells = [];
   levelRows.forEach((row, r) => {
-    for (let c = 0; c < cols; ++c) cells.push(makeCell(row[c] || '.', r, c));
+    for (let c = 0; c < cols; ++c) {
+      const cell = makeCell(row[c] || '.', r, c);
+      if (selection && selection.r === r && selection.c === c) cell.classList.add('sel');
+      cells.push(cell);
+    }
   });
   grid.replaceChildren(...cells);
 }
@@ -527,11 +650,16 @@ function patchCell(r, c, ch) {
   if (!cell) { renderGrid(); return; }
   cell.className = 'cell ' + cellClass(ch);
   cell.textContent = cellLabel(ch);
+  if (selection && selection.r === r && selection.c === c) cell.classList.add('sel');
 }
 
 function scheduleApply() {
   clearTimeout(applyTimer);
-  applyTimer = setTimeout(() => { if (engine) engine.setLevel(levelText()); }, 350);
+  applyTimer = setTimeout(() => {
+    if (!engine) return;
+    engine.setLevel(levelText());
+    applyAllProps();
+  }, 350);
 }
 
 function setCell(r, c, ch) {
@@ -552,29 +680,216 @@ function syncLevelFromEngine() {
   if (!engine) return;
   levelRows = parseLevel(engine.level());
   $('level-text').value = levelText();
+  if (selection && charAt(selection.r, selection.c) !== selection.ch) selection = null;
   renderGrid();
+  renderInspector();
 }
 
-// painting: tap or drag; each cell becomes the chosen brush
+// ---- object selection and its properties ------------------------------------------------------
+function worldPointOf(r, c) {
+  return { x: c + 0.5, y: levelRows.length - 1 - r + 0.5 };
+}
+function lightPropOf(r, c) {
+  const key = r + ',' + c;
+  if (!props[key]) props[key] = { color: '#ffb347', radius: 8, intensity: 1 };
+  return props[key];
+}
+function hexRgb(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  const n = m ? parseInt(m[1], 16) : 0xffb347;
+  return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
+}
+function applyLight(r, c) {
+  if (!engine) return;
+  const p = lightPropOf(r, c);
+  const { x, y } = worldPointOf(r, c);
+  const id = engine.objectAt(x, y);
+  if (id >= 0) {
+    const rgb = hexRgb(p.color);
+    engine.setLight(id, rgb.r, rgb.g, rgb.b, Number(p.radius), Number(p.intensity));
+  }
+}
+function applyAllProps() {
+  for (const key of Object.keys(props)) {
+    const [r, c] = key.split(',').map(Number);
+    applyLight(r, c);
+  }
+}
+function selectCell(r, c) {
+  if (charAt(r, c) === '.') {
+    selection = null;
+  } else {
+    selection = { r, c, ch: charAt(r, c) };
+  }
+  renderGrid();
+  renderInspector();
+}
+function renderInspector() {
+  const box = $('inspector');
+  if (!selection || charAt(selection.r, selection.c) !== selection.ch) {
+    selection = null;
+    box.hidden = true;
+    box.replaceChildren();
+    return;
+  }
+  const { r, c, ch } = selection;
+  const head = document.createElement('div');
+  head.className = 'inspector-head';
+  const title = document.createElement('b');
+  title.textContent = kindName(ch);
+  const where = document.createElement('span');
+  where.className = 'dim';
+  where.textContent = `${t('position')} ${digits(r + 1)}, ${digits(c + 1)}`;
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'ghost';
+  close.textContent = '✕';
+  close.addEventListener('click', () => selectCell(r, c));
+  head.append(title, where, close);
+  box.replaceChildren(head);
+  box.hidden = false;
+
+  if (ch === 'L') {
+    const p = lightPropOf(r, c);
+    const row = document.createElement('div');
+    row.className = 'inspector-row';
+    const label = document.createElement('span');
+    label.textContent = t('lampColor');
+    const swatches = document.createElement('div');
+    swatches.className = 'swatches';
+    for (const color of ['#ffb347', '#ff8078', '#7ad69b', '#8ab4ff', '#ffffff', '#c792ea']) {
+      const swatch = document.createElement('button');
+      swatch.type = 'button';
+      swatch.className = 'swatch' + (p.color === color ? ' on' : '');
+      swatch.style.background = color;
+      swatch.addEventListener('click', () => {
+        p.color = color;
+        applyLight(r, c);
+        renderInspector();
+      });
+      swatches.append(swatch);
+    }
+    row.append(label, swatches);
+    const slider = (key, labelKey, min, max, step, id) => {
+      const wrap = document.createElement('label');
+      wrap.className = 'inspector-slider';
+      const span = document.createElement('span');
+      const say = () => { span.textContent = `${t(labelKey)} ${digits(String(p[key]))}`; };
+      say();
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.id = id;
+      input.min = min;
+      input.max = max;
+      input.step = step;
+      input.value = p[key];
+      input.addEventListener('input', () => {
+        p[key] = Number(input.value);
+        say();
+        applyLight(r, c);
+      });
+      wrap.append(span, input);
+      return wrap;
+    };
+    box.append(row, slider('radius', 'lampRadius', 2, 20, 0.5, 'light-radius'),
+      slider('intensity', 'lampIntensity', 0.2, 3, 0.1, 'light-intensity'));
+  }
+
+  const tools = document.createElement('div');
+  tools.className = 'actions';
+  const duplicate = document.createElement('button');
+  duplicate.type = 'button';
+  duplicate.className = 'ghost';
+  duplicate.textContent = t('duplicate');
+  duplicate.addEventListener('click', () => {
+    for (let ring = 1; ring < 8; ++ring) {
+      for (let dr = -ring; dr <= ring; ++dr) {
+        for (let dc = -ring; dc <= ring; ++dc) {
+          if (Math.abs(dr) !== ring && Math.abs(dc) !== ring) continue;
+          const nr = r + dr, nc = c + dc;
+          if (nr < 0 || nc < 0 || charAt(nr, nc) !== '.') continue;
+          setCell(nr, nc, ch);
+          if (ch === 'L') props[nr + ',' + nc] = { ...lightPropOf(r, c) };
+          selectCell(nr, nc);
+          applyAllProps();
+          return;
+        }
+      }
+    }
+  });
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.className = 'ghost';
+  remove.textContent = t('remove');
+  remove.addEventListener('click', () => {
+    delete props[r + ',' + c];
+    setCell(r, c, '.');
+    selection = null;
+    renderGrid();
+    renderInspector();
+  });
+  tools.append(duplicate, remove);
+  box.append(tools);
+}
+
+// painting on empty cells; tapping an object selects it, dragging moves it
 const gridEl = $('level-grid');
-function paintAt(event) {
+function cellUnder(event) {
   const el = document.elementFromPoint(event.clientX, event.clientY);
-  if (!el || !el.classList || !el.classList.contains('cell')) return;
+  return el && el.classList && el.classList.contains('cell') ? el : null;
+}
+function paintAt(event) {
+  const el = cellUnder(event);
+  if (!el) return;
   const key = el.dataset.r + ',' + el.dataset.c;
   if (key === painted) return;
   painted = key;
   setCell(Number(el.dataset.r), Number(el.dataset.c), brush);
 }
+let dragMode = null;   // 'paint' | 'move'
+let moveFrom = null;
 gridEl.addEventListener('pointerdown', (event) => {
   event.preventDefault();
-  painting = true;
   painted = '';
   try { gridEl.setPointerCapture(event.pointerId); } catch { /* not capturable */ }
-  paintAt(event);
+  const el = cellUnder(event);
+  if (!el) return;
+  const r = Number(el.dataset.r), c = Number(el.dataset.c);
+  const ch = charAt(r, c);
+  if (ch !== '.' && brush !== '.') {
+    dragMode = 'move';
+    moveFrom = { r, c, ch };
+    selectCell(r, c);
+    painting = false;
+  } else {
+    dragMode = 'paint';
+    painting = true;
+    paintAt(event);
+  }
 });
-gridEl.addEventListener('pointermove', (event) => { if (painting) paintAt(event); });
+gridEl.addEventListener('pointermove', (event) => {
+  if (dragMode === 'paint' && painting) {
+    paintAt(event);
+  } else if (dragMode === 'move' && moveFrom) {
+    const el = cellUnder(event);
+    if (!el) return;
+    const r = Number(el.dataset.r), c = Number(el.dataset.c);
+    if ((r !== moveFrom.r || c !== moveFrom.c) && charAt(r, c) === '.') {
+      const { ch } = moveFrom;
+      const key = moveFrom.r + ',' + moveFrom.c;
+      const p = props[key];
+      setCell(moveFrom.r, moveFrom.c, '.');
+      setCell(r, c, ch);
+      if (p) { delete props[key]; props[r + ',' + c] = p; }
+      moveFrom = { r, c, ch };
+      selection = { r, c, ch };
+      renderGrid();
+      renderInspector();
+    }
+  }
+});
 for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
-  gridEl.addEventListener(type, () => { painting = false; painted = ''; });
+  gridEl.addEventListener(type, () => { painting = false; painted = ''; dragMode = null; moveFrom = null; });
 }
 gridEl.addEventListener('contextmenu', (event) => event.preventDefault());
 
@@ -584,25 +899,54 @@ $('level-text').addEventListener('input', () => {
   scheduleApply();
 });
 
-// the two panels: drawing the level, and writing behaviour
+// ---- the three work areas: scene, behaviour, play ---------------------------------------------
 function showPanel(which) {
-  const level = which === 'level';
-  $('level-panel').hidden = !level;
-  $('behavior-panel').hidden = level;
-  $('panel-level').setAttribute('aria-selected', level ? 'true' : 'false');
-  $('panel-behavior').setAttribute('aria-selected', level ? 'false' : 'true');
-  if (level) syncLevelFromEngine();
+  $('level-panel').hidden = which !== 'level';
+  $('behavior-panel').hidden = which !== 'behavior';
+  $('play-panel').hidden = which !== 'play';
+  $('panel-level').setAttribute('aria-selected', which === 'level' ? 'true' : 'false');
+  $('panel-behavior').setAttribute('aria-selected', which === 'behavior' ? 'true' : 'false');
+  $('panel-play').setAttribute('aria-selected', which === 'play' ? 'true' : 'false');
+  if (which === 'level') syncLevelFromEngine();
 }
 $('panel-level').addEventListener('click', () => showPanel('level'));
 $('panel-behavior').addEventListener('click', () => showPanel('behavior'));
+$('panel-play').addEventListener('click', () => showPanel('play'));
 
-// games are { level, scripts: [{name, source}] } — in the browser, and as a .json file
+$('play-toggle').addEventListener('click', () => setMode(mode === 'play' ? 'edit' : 'play'));
+$('play-big').addEventListener('click', () => setMode('play'));
+$('stop-big').addEventListener('click', () => setMode('edit'));
+
+$('project-name').addEventListener('click', () => {
+  renderProjectsSheet();
+  $('projects-sheet').hidden = false;
+});
+$('projects-close').addEventListener('click', () => { $('projects-sheet').hidden = true; });
+$('project-rename').addEventListener('click', () => {
+  const name = window.prompt(t('rename'), projectName);
+  if (name && name.trim()) {
+    projectName = name.trim();
+    $('project-name').textContent = projectName;
+    saveProject();
+    $('projects-sheet').hidden = true;
+    toast(t('saved'));
+  }
+});
+
+// ---- games are { level, scripts, props } — in the browser and as a .json file -----------------
 function gameState() {
-  return { app: 'g-engine', version: 1, level: levelText(), scripts: scripts.map((s) => ({ name: s.name, source: s.draft })) };
+  return {
+    app: 'g-engine', version: 2, name: projectName,
+    level: levelText(),
+    scripts: scripts.map((s) => ({ name: s.name, source: s.draft })),
+    props: { ...props },
+  };
 }
 
 function loadGameState(state) {
   if (!engine || !state || typeof state.level !== 'string' || !Array.isArray(state.scripts)) return false;
+  setMode('edit');
+  props = state.props && typeof state.props === 'object' ? { ...state.props } : {};
   engine.setLevel(state.level.endsWith('\n') ? state.level : state.level + '\n');
   scripts = engine.scripts().map((s) => {
     const found = state.scripts.find((x) => x && x.name === s.name);
@@ -610,11 +954,13 @@ function loadGameState(state) {
     return { name: s.name, original: source, installed: source, draft: source };
   });
   scripts.forEach((s, i) => {
-    if (!engine.setScript(i, s.source).ok) {
+    if (!engine.setScript(i, s.installed).ok) {
       const fallback = engine.scripts()[i].source;
       scripts[i] = { name: s.name, original: fallback, installed: fallback, draft: fallback };
     }
   });
+  applyAllProps();
+  selection = null;
   syncLevelFromEngine();
   selectScript(0);
   return true;
@@ -649,26 +995,31 @@ const starterScripts = () => [
   { name: 'বাক্স', source: '# বাক্স\n' },
 ];
 
-$('new-game').addEventListener('click', () => {
+function newProject() {
   if (!engine) return;
+  const store = projectsStore();
+  projectName = t('projectName')(store.list.length + 1);
   loadGameState({ level: starterLevel(), scripts: starterScripts() });
+  $('project-name').textContent = projectName;
+  $('projects-sheet').hidden = true;
   applyLanguage();
   toast(t('loaded'));
-});
+}
+
+$('new-game').addEventListener('click', newProject);
+$('project-new').addEventListener('click', newProject);
 $('sample-game').addEventListener('click', () => {
   if (!engine) return;
-  engine.setLevel(demoLevel);
-  scripts = demoScripts.map((s) => ({ name: s.name, original: s.source, installed: s.source, draft: s.source }));
-  scripts.forEach((s, i) => engine.setScript(i, s.source));
-  syncLevelFromEngine();
-  selectScript(0);
+  projectName = t('loadSample');
+  loadGameState({ level: demoLevel, scripts: demoScripts.map((s) => ({ name: s.name, source: s.source })) });
+  $('project-name').textContent = projectName;
   applyLanguage();
   toast(t('loaded'));
 });
 $('save-game').addEventListener('click', () => {
   if (!engine) return;
   try {
-    localStorage.setItem('ge-game', JSON.stringify(gameState()));
+    saveProject();
     toast(t('saved'));
   } catch {
     toast(t('saveFailed'));
@@ -690,8 +1041,13 @@ $('import-file').addEventListener('change', async (event) => {
   event.target.value = '';
   if (!file) return;
   try {
-    const ok = loadGameState(JSON.parse(await file.text()));
+    const state = JSON.parse(await file.text());
+    const ok = loadGameState(state);
     if (ok) {
+      if (typeof state.name === 'string' && state.name) {
+        projectName = state.name;
+        $('project-name').textContent = projectName;
+      }
       applyLanguage();
       toast(t('loaded'));
     } else {
@@ -720,6 +1076,13 @@ async function start() {
   }
   message.textContent = '';
 
+  // Any button or key that presses into the engine starts the game by itself.
+  const rawButton = engine.button;
+  engine.button = (button, down) => { if (down) ensurePlay(); rawButton(button, down); };
+  engine.play = ensurePlay;
+  engine.pause = () => setMode('edit');
+  engine.mode = () => mode;
+
   applyQuality();
 
   demoLevel = engine.level();
@@ -727,12 +1090,27 @@ async function start() {
   scripts = demoScripts.map((s) => ({ name: s.name, original: s.source, installed: s.source, draft: s.source }));
   new ResizeObserver(resizeCanvas).observe(screen);
   window.addEventListener('resize', resizeCanvas);
-  const saved = readSavedGame();
-  if (saved && loadGameState(saved)) {
-    toast(t('loaded'));
-  } else {
-    selectScript(0);
+
+  // Open the last project; with none yet, the single old save; with neither, a fresh project.
+  let restored = false;
+  const store = projectsStore();
+  if (store.current) {
+    const entry = store.list.find((x) => x.name === store.current);
+    if (entry && loadGameState(entry.state)) {
+      projectName = entry.name;
+      restored = true;
+    }
   }
+  if (!restored) {
+    const saved = readSavedGame();
+    if (saved && loadGameState(saved)) {
+      projectName = t('projectName')(1);
+      restored = true;
+      toast(t('loaded'));
+    }
+  }
+  if (!restored) newProject();
+  $('project-name').textContent = projectName;
   showPanel('level');
   applyLanguage();
 
@@ -743,7 +1121,7 @@ async function start() {
     const now = performance.now();
     const elapsed = (now - last) / 1000;
     last = now;
-    engine.frame(Math.min(elapsed, 0.1));
+    engine.frame(mode === 'play' ? Math.min(elapsed, 0.1) : 0);
     if (!document.hidden && elapsed < 1) updateHud(elapsed);
     requestAnimationFrame(frame);
   };

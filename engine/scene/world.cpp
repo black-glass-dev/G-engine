@@ -862,4 +862,51 @@ void World::buildFrame(RenderFrame& frame) const {
     frame.occluders.insert(frame.occluders.end(), edges_.begin(), edges_.end());
 }
 
+void World::objectViews(std::vector<ObjectView>& out) const {
+    out.clear();
+    out.reserve(objects_.size());
+    for (const Object& o : objects_) {
+        if (!o.alive) continue;
+        ObjectView v;
+        v.id = o.id;
+        v.key = o.key;
+        v.pos = o.pos;
+        v.light = o.light.present && o.light.on;
+        v.lightRadius = o.light.radius;
+        v.lightIntensity = o.light.intensity;
+        v.lightColor = o.light.color;
+        out.push_back(std::move(v));
+    }
+}
+
+i32 World::objectAt(Vec2 point) const {
+    i32 best = -1;
+    f32 bestDistance = 1.21f * 1.21f;  // about one tile away at most
+    for (const Object& o : objects_) {
+        if (!o.alive) continue;
+        const f32 dx = o.pos.x - point.x;
+        const f32 dy = o.pos.y - point.y;
+        const f32 d = dx * dx + dy * dy;
+        if (d < bestDistance) {
+            bestDistance = d;
+            best = o.id;
+        }
+    }
+    return best;
+}
+
+bool World::setLight(i32 id, Color color, f32 radius, f32 intensity) {
+    for (Object& o : objects_) {
+        if (o.id == id && o.alive) {
+            o.light.present = true;
+            o.light.on = true;
+            o.light.color = color;
+            o.light.radius = radius > 0.25f ? (radius < 64.0f ? radius : 64.0f) : 0.25f;
+            o.light.intensity = intensity >= 0.0f ? (intensity < 16.0f ? intensity : 16.0f) : 0.0f;
+            return true;
+        }
+    }
+    return false;
+}
+
 }  // namespace ge

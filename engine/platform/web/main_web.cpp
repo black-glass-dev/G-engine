@@ -92,6 +92,14 @@ GE_EXPORT(ge_set_level) void ge_set_level(const char* text, int length) {
 GE_EXPORT(ge_hud) const char* ge_hud() { return app != nullptr ? app->hud().c_str() : "{}"; }
 
 /// option: 0 lighting on/off, 1 bloom on/off, 2 light buffer scale (0.25..1), 3 exposure
+GE_EXPORT(ge_object_at) int ge_object_at(float x, float y) {
+    return app != nullptr ? app->world().objectAt(ge::Vec2{x, y}) : -1;
+}
+
+GE_EXPORT(ge_set_light) int ge_set_light(int id, float r, float g, float b, float radius, float intensity) {
+    return app != nullptr && app->world().setLight(id, ge::Color{r, g, b, 1.0f}, radius, intensity) ? 1 : 0;
+}
+
 GE_EXPORT(ge_option) void ge_option(int option, float value) {
     if (app == nullptr) return;
     ge::RenderSettings& s = app->settings();

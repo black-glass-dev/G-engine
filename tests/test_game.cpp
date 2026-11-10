@@ -511,3 +511,36 @@ GE_TEST(atlas_is_generated_with_normals) {
     }
     CHECK(glowing > 8);
 }
+
+GE_TEST(game_editors_can_find_objects_and_set_lights) {
+    // The studio taps objects and changes their light — these are the same calls it makes.
+    World world;
+    world.load("L............\n"
+               ".............\n"
+               "P............\n"
+               "#############\n");
+    // The lamp sits at cell (row 0, col 0) — world point (0.5, 3.5) in a 4-row picture.
+    const i32 lamp = world.objectAt(Vec2{0.5f, 3.5f});
+    CHECK(lamp >= 0);
+    bool isLamp = false;
+    for (const Object& o : world.objects()) {
+        if (o.id == lamp) isLamp = o.light.present;
+    }
+    CHECK(isLamp);
+    CHECK(world.setLight(lamp, Color{0.2f, 0.5f, 1.0f, 1.0f}, 3.5f, 2.0f));
+    bool seen = false;
+    std::vector<World::ObjectView> views;
+    world.objectViews(views);
+    for (const World::ObjectView& v : views) {
+        if (v.id == lamp) {
+            seen = true;
+            CHECK(v.light);
+            CHECK(std::fabs(v.lightRadius - 3.5f) < 0.01f);
+            CHECK(std::fabs(v.lightIntensity - 2.0f) < 0.01f);
+            CHECK(std::fabs(v.lightColor.b - 1.0f) < 0.01f);
+        }
+    }
+    CHECK(seen);
+    CHECK(world.objectAt(Vec2{11.5f, 0.5f}) == -1);  // empty floor: nothing there
+    CHECK(!world.setLight(999999, Color{1, 1, 1, 1}, 5.0f, 1.0f));  // unknown id refuses
+}

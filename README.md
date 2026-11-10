@@ -18,9 +18,9 @@
 - **কথা (Kotha) — বাক্যে গেম বানানো।** `কয়েন ছুঁলে স্কোর ১ বাড়াও` আর `when touching a coin, increase score by 1` — দুটো একই কথা; বাংলা-ইংরেজি এক স্ক্রিপ্টে মেশানোও যায়। ইঞ্জিন প্রতিটা লাইন **কীভাবে বুঝল** তা পাশে লিখে দেখায়। না বুঝলে লাইন ধরে বলে কোন শব্দে আটকেছে, বানান ভুল হলে কাছাকাছি শব্দটা দেখায়। → [ভাষার নির্দেশিকা](docs/KOTHA.md)
 - **আলো-ছায়া।** প্রতিটা ছবির সাথে normal map, চলন্ত রঙিন আলো, নরম ছায়া, HDR, bloom — পুরো দৃশ্য ১৪টা draw call-এ (OpenGL ES 3.0 / WebGL 2)। → [রেন্ডারিং কীভাবে কাজ করে](docs/RENDERING.md)
 - **পদার্থবিদ্যা।** [Box2D](https://box2d.org) v3.2 — হাঁটা, লাফ, ঠেলে বাক্স সরানো।
-- **স্টুডিও — এখানেই নিজের গেম বানান।** «লেভেল বানাও» ট্যাবে ট্যাপ বা ড্র্যাগ করে মানচিত্র এঁকুন (দেয়াল, কয়েন, বাতি, দরজা…), «আচরণ লেখো» ট্যাবে প্রতিটা জিনিসের নিয়ম বাংলা বা ইংরেজি বাক্যে লিখুন, উপরের পর্দায় সাথে সাথে খেলতে দেখুন। খেলা ব্রাউজারে সংরক্ষিত থাকে, .json ফাইলে নামিয়ে বাঁধানো বা আবার লোড করা যায়। ফোনের ব্রাউজারেও সব চলে, ইন্টারফেস বাংলা ও ইংরেজিতে।
+- **ওয়ার্কস্পেস — এখানেই খেলা বানানো হয়, ইঞ্জিনটাই অ্যাপ।** উপরের দৃশ্যে সাথে সাথে ফল, নিচে «দৃশ্য» ট্যাবে বস্তু বসান, টেনে সরান, বেছে নিয়ে তার বৈশিষ্ট্য বদলান (বাতির আলোর রং, ব্যাসার্ধ, তীব্রতা), «আচরণ»-এ কথা ভাষায় নিয়ম লিখুন, «প্লে»-তে খেলুন। প্রজেক্ট ব্রাউজারে জমা থাকে, .json ফাইলে নামিয়ে বা লোড করা যায়। ফোনেই পুরোটা চলে, ইন্টারফেস বাংলা ও ইংরেজিতে।
 
-![স্টুডিও — লেভেল এডিটর](docs/images/studio.jpg)
+![ওয়ার্কস্পেস — দৃশ্য, বস্তুর বৈশিষ্ট্য](docs/images/workspace.png)
 - **এজেন্ট সংস্করণ।** কোনো পর্দা ছাড়াই এআই এজেন্টরা এই ইঞ্জিনে গেম বানাতে পারে: `ge-game` কমান্ড-লাইন টুল (`new`/`check`/`simulate`/`pack`), সাথে একটা MCP সার্ভার — নিজেরা লিখে `check`-এ ভুল ধরায়, `simulate`-এ খেলে ফল দেখে। → [AGENTS.md](AGENTS.md)
 - **নমুনা গেম।** বাতির আলোয় একটা ছোট অন্ধকূপ — কয়েন, কাঁটা, প্রহরী, দরজা। সবার আচরণ কথা-য় লেখা ([`games/demo/demo.cpp`](games/demo/demo.cpp))।
 
@@ -52,7 +52,7 @@ python3 tools/serve.py    # ঠিকানা দেখাবে: http://localh
 
 1. উপরের ছবির মতো **Assets** থেকে `g-engine.apk` নামান।
 2. ফোনে ফাইলটা খুলে ইনস্টল করুন ("অজানা উৎস" এর অনুমতি চাইলে দিন)।
-3. **G-Engine** চালু করুন — এটাই পুরো স্টুডিও: টেপে/টেনে লেভেল আঁকুন, কথা-য় নিয়ম লিখুন, সাথে সাথে খেলুন, সেভ থাকে (ল্যান্ডস্কেপে চলবে, অফলাইনে)।
+3. **G-Engine** চালু করুন — এটাই পুরো ইঞ্জিন: দৃশ্যে বস্তু বসিয়ে সরান, বৈশিষ্ট্য বদলান, কথা-য় নিয়ম লিখুন, «প্লে»-তে খেলুন, প্রজেক্ট সেভ থাকে (অফলাইনেও চলে)।
 
 আপনার ফোনে চালানোর ছবি (১০ নভেম্বর ২০২৬):
 
@@ -96,7 +96,7 @@ sh tools/test.sh --web      # + ওয়েব build ও আসল (headless) �
 
 এখন যা আছে:
 
-- **ইঞ্জিন:** ৫১টা পরীক্ষা, ৬৮৩০টা যাচাই — ভাষা (বাংলা ও ইংরেজি বাক্য, ভুল ধরা), পদার্থবিদ্যা, খেলার নিয়ম। এর মধ্যে একটা রোবট নমুনা গেমটা শুরু থেকে শেষ পর্যন্ত খেলে জেতে, আর এই README ও [ভাষার নির্দেশিকার](docs/KOTHA.md) প্রতিটা উদাহরণ কম্পাইল হয়।
+- **ইঞ্জিন:** ৫২টা পরীক্ষা, ৬৮৪০টা যাচাই — ভাষা (বাংলা ও ইংরেজি বাক্য, ভুল ধরা), পদার্থবিদ্যা, খেলার নিয়ম। এর মধ্যে একটা রোবট নমুনা গেমটা শুরু থেকে শেষ পর্যন্ত খেলে জেতে, আর এই README ও [ভাষার নির্দেশিকার](docs/KOTHA.md) প্রতিটা উদাহরণ কম্পাইল হয়।
 - **ব্রাউজার:** ২৪টা যাচাই — WebGL ভুল নেই, কিবোর্ড ও পর্দার বোতাম, স্ক্রিপ্ট বদলানো, ভুল স্ক্রিপ্ট ফিরিয়ে দেওয়া, ৪০টা বাতির দৃশ্য, ফোনের মাপের পর্দা।
 
 **যা যাচাই করা যায়নি:** আসল ফোন বা আসল গ্রাফিক্স চিপে গতি (fps)। ব্রাউজারের পরীক্ষা চলে headless Chromium-এ, সফটওয়্যার রেন্ডারিং আর ফোনের অনুকরণে — সেটা বলে ছবি ঠিক আসছে, কিন্তু ফোনে কত দ্রুত চলবে তা বলে না।
@@ -139,9 +139,9 @@ Android অ্যাপ · শব্দ ও সংগীত · নিজের �
 - **Kotha (কথা, "speech") — games made of sentences.** `when touching a coin, increase score by 1` and `কয়েন ছুঁলে স্কোর ১ বাড়াও` mean the same thing, and both languages can be mixed in one script. Next to every line the engine shows **how it understood it**. When it does not understand, it names the line and the word it got stuck on, and suggests the nearest word for a typo. → [Language guide](docs/KOTHA.md)
 - **Lighting.** A normal map for every sprite, moving coloured lights, soft shadows, HDR and bloom — the whole scene in 14 draw calls (OpenGL ES 3.0 / WebGL 2). → [How rendering works](docs/RENDERING.md)
 - **Physics.** [Box2D](https://box2d.org) v3.2 — walking, jumping, pushing crates.
-- **The studio — make your own game here.** Draw the map in the “Build the level” tab (tap or drag: walls, coins, lamps, a door…), write what each thing does in the “Write behaviour” tab in plain Bengali or English, and play it on the screen above right away. The game stays saved in the browser; download it as a .json file or load it back. Everything also works in a phone browser, in Bengali and English.
+- **The workspace — games are made here; the app is the engine.** The scene above shows the result live. In the “Scene” tab place objects, drag them around and set their properties (a lamp's light colour, radius, intensity), write the rules in Kotha in the “Behaviour” tab, and play in “Play”. Projects stay saved in the browser; download them as .json files or load them back. The whole thing works on a phone, in Bengali and English.
 
-![The studio — the level editor](docs/images/studio.jpg)
+![The workspace — scene and object properties](docs/images/workspace.png)
 - **Agent edition.** AI agents can build games with this engine without a screen: the `ge-game` command-line tool (`new`/`check`/`simulate`/`pack`) plus an MCP server — write scripts, get errors from `check`, see what happened in `simulate`. → [AGENTS.md](AGENTS.md)
 - **Sample game.** A small lamp-lit dungeon with coins, spikes, a guard and a door. Everything they do is written in Kotha ([`games/demo/demo.cpp`](games/demo/demo.cpp)).
 
@@ -167,7 +167,7 @@ python3 tools/serve.py    # prints the address: http://localhost:8080
 
 1. As in the picture above, download `g-engine.apk` from **Assets**.
 2. Open the file on the phone and install it (allow "unknown sources" if asked).
-3. Start **G-Engine** — this is the whole studio: draw the level by tapping and dragging, write the rules in Kotha, play right away, everything is saved (landscape, works offline).
+3. Start **G-Engine** — this is the whole engine: place and drag objects in the scene, set their properties, write the rules in Kotha, press Play, everything is saved (works offline).
 
 A picture of it running on your phone (10 November 2026):
 
@@ -200,7 +200,7 @@ sh tools/test.sh --web      # + the web build and a test in a real (headless) br
 
 What exists now:
 
-- **Engine:** 51 tests, 6830 checks — the language (Bengali and English sentences, error reporting), physics, game rules. One of them is a robot that plays the sample game from start to finish and wins; another compiles every example in this README and in the [language guide](docs/KOTHA.md).
+- **Engine:** 52 tests, 6840 checks — the language (Bengali and English sentences, error reporting), physics, game rules. One of them is a robot that plays the sample game from start to finish and wins; another compiles every example in this README and in the [language guide](docs/KOTHA.md).
 - **Browser:** 24 checks — no WebGL errors, keyboard and on-screen buttons, changing a script, refusing a broken script, a scene with 40 lamps, a phone-sized screen.
 
 **What could not be verified:** speed (fps) on a real phone or a real graphics chip. The browser test runs in headless Chromium with software rendering and phone emulation. That shows the picture is right; it does not show how fast a phone will draw it.

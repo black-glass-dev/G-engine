@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0d12">
-  <title>G-Engine — নিজের গেম বানানোর ইঞ্জিন</title>
+  <title>G-Engine — গেম ইঞ্জিন</title>
   <link rel="preload" href="fonts/hind-siliguri-bengali-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +17,12 @@
         <p data-t="tagline"></p>
       </div>
     </div>
-    <button id="lang" class="chip" type="button"></button>
+    <div class="tools">
+      <button id="project-name" class="chip strong" type="button" data-t="projects"></button>
+      <button id="save-game" class="chip" type="button" data-t="saveGame"></button>
+      <button id="play-toggle" class="chip play" type="button" data-t="play"></button>
+      <button id="lang" class="chip" type="button"></button>
+    </div>
   </header>
 
   <main>
@@ -71,7 +76,6 @@
       <div class="project" id="project">
         <button id="new-game" class="chip" type="button" data-t="newGame"></button>
         <button id="sample-game" class="chip" type="button" data-t="loadSample"></button>
-        <button id="save-game" class="chip" type="button" data-t="saveGame"></button>
         <button id="export-game" class="chip" type="button" data-t="exportGame"></button>
         <button id="import-game" class="chip" type="button" data-t="importGame"></button>
         <input id="import-file" type="file" accept=".json,application/json" hidden>
@@ -79,17 +83,21 @@
       </div>
 
       <div class="panels" role="tablist">
-        <button id="panel-level" class="panel-tab" type="button" role="tab" data-t="levelTab"></button>
+        <button id="panel-level" class="panel-tab" type="button" role="tab" data-t="sceneTab"></button>
         <button id="panel-behavior" class="panel-tab" type="button" role="tab" data-t="behaviorTab"></button>
+        <button id="panel-play" class="panel-tab" type="button" role="tab" data-t="playTab"></button>
       </div>
 
       <div id="level-panel">
-        <p class="lead" data-t="levelLead"></p>
+        <p class="lead" data-t="sceneLead"></p>
         <div class="palette" id="palette"></div>
         <div class="grid-wrap"><div id="level-grid" class="level-grid"></div></div>
-        <h3 data-t="levelText"></h3>
-        <textarea id="level-text" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
-        <p class="hint" data-t="levelHint"></p>
+        <div id="inspector" class="inspector" hidden></div>
+        <details class="raw">
+          <summary data-t="levelText"></summary>
+          <textarea id="level-text" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+          <p class="hint" data-t="levelHint"></p>
+        </details>
       </div>
 
       <div id="behavior-panel" hidden>
@@ -110,8 +118,29 @@
         <h3 data-t="tryThese"></h3>
         <div id="examples" class="examples"></div>
       </div>
+
+      <div id="play-panel" hidden>
+        <p class="lead" data-t="playLead"></p>
+        <div class="play-box">
+          <button id="play-big" class="primary" type="button" data-t="play"></button>
+          <button id="stop-big" class="ghost" type="button" data-t="stop"></button>
+        </div>
+        <p class="hint" data-t="playHint"></p>
+      </div>
     </section>
   </main>
+
+  <div id="projects-sheet" class="sheet" hidden>
+    <div class="sheet-card" role="dialog" aria-modal="true">
+      <h2 data-t="projects"></h2>
+      <div id="projects-list" class="projects-list"></div>
+      <div class="actions">
+        <button id="project-new" class="primary" type="button" data-t="newGame"></button>
+        <button id="project-rename" class="ghost" type="button" data-t="rename"></button>
+        <button id="projects-close" class="ghost" type="button" data-t="close"></button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p data-t="footer"></p>

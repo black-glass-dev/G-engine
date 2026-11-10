@@ -66,7 +66,13 @@ async function open(width, height, dpr, touch, query = '') {
 }
 const hud = (page) => page.evaluate(() => window.ge.hud());
 /// Waits for game time, not wall-clock time: a software-rendered test browser can be very slow.
+/// In edit mode the scene sits at its start state and game time does not move — then a short wait.
 const play = async (page, seconds) => {
+  const editing = await page.evaluate(() => window.ge.mode && window.ge.mode() === 'edit');
+  if (editing) {
+    await new Promise((r) => setTimeout(r, 300));
+    return;
+  }
   const target = (await hud(page)).time + seconds;
   await page.waitForFunction((t) => window.ge.hud().time >= t, { timeout: 60000, polling: 30 }, target);
 };
@@ -87,6 +93,9 @@ console.log('desktop');
   const page = await open(1280, 800, 1, false);
   const glError = await page.evaluate(() => window.ge.gl.getError());
   check(glError === 0, 'no WebGL error after start', 'gl.getError() = ' + glError);
+  // The workspace opens with a fresh project of its own; the sample game is a template.
+  await page.click('#sample-game');
+  await play(page, 0.3);
   let h = await hud(page);
   check(h.state === 'playing' && h.stats.sprites > 100 && h.stats.lights >= 2, 'the demo is running', JSON.stringify(h.stats));
   check(h.stats.draws <= 16, 'a frame takes few draw calls', String(h.stats.draws));
@@ -303,6 +312,23 @@ console.log('studio');
   const blankRows = blank.split('\n').filter(Boolean);
   check(blankRows.length === 8 && blankRows[0].startsWith('###') && blank.includes('P'), 'new game makes a blank room', `${blankRows.length} rows`);
 
+  // tapping an object selects it and the inspector shows what it is
+  await page.click('.cell[data-r="6"][data-c="3"]');
+  const sel = await page.evaluate(() => {
+    const box = document.getElementById('inspector');
+    return { hidden: box.hidden, text: box.textContent };
+  });
+  check(!sel.hidden && sel.text.includes('খেলোয়াড়'), 'tapping an object selects it and shows its kind', sel.text.slice(0, 60));
+
+  // a lamp gets its light from the inspector, into the engine
+  await page.click('.cell[data-r="4"][data-c="8"]');
+  await page.$eval('#light-radius', (el) => {
+    el.value = '3.5';
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  const lights = await page.evaluate(() => window.ge.hud().lights);
+  check(lights.some((l) => Math.abs(l.radius - 3.5) < 0.01), 'the lamp radius from the inspector reaches the engine', JSON.stringify(lights));
+
   // saving puts the game in the browser; a reload brings it back
   await page.click('#save-game');
   await page.reload({ waitUntil: 'domcontentloaded' });
@@ -312,6 +338,17 @@ console.log('studio');
   check(restored === blank, 'the saved game comes back after a reload', `${restored.split('\n').filter(Boolean).length} rows`);
   check((await page.evaluate(() => window.ge.hud().state)) === 'playing', 'the restored game is running');
   check((await page.evaluate(() => window.ge.gl.getError())) === 0, 'no WebGL error in the studio');
+
+  // dragging an object moves it in the scene
+  const from = await (await page.$('.cell[data-r="6"][data-c="3"]')).boundingBox();
+  const to = await (await page.$('.cell[data-r="6"][data-c="5"]')).boundingBox();
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 6 });
+  await page.mouse.up();
+  await new Promise((r) => setTimeout(r, 500));
+  const moved = (await page.evaluate(() => window.ge.level())).split('\n');
+  check(moved[6][5] === 'P' && moved[6][3] === '.', 'dragging an object moves it', moved[6]);
 }
 
 // ------------------------------------------------------------------------------------------

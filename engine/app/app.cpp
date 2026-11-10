@@ -105,6 +105,24 @@ const std::string& App::hud() {
         appendJsonString(out, bubbles[i].text);
         out += '}';
     }
+    out += "],\"lights\":[";
+    std::vector<World::ObjectView> views;
+    world_.objectViews(views);
+    bool firstLight = true;
+    for (const World::ObjectView& v : views) {
+        if (!v.light) continue;
+        if (!firstLight) out += ',';
+        firstLight = false;
+        out += "{\"x\":";
+        appendNumber(out, v.pos.x);
+        out += ",\"y\":";
+        appendNumber(out, v.pos.y);
+        out += ",\"radius\":";
+        appendNumber(out, v.lightRadius);
+        out += ",\"intensity\":";
+        appendNumber(out, v.lightIntensity);
+        out += '}';
+    }
     const RenderStats& stats = renderer_.stats();
     out += "],\"stats\":{\"sprites\":" + std::to_string(stats.sprites) + ",\"lights\":" + std::to_string(stats.lights) +
            ",\"shadowLights\":" + std::to_string(stats.shadowLights) + ",\"edges\":" + std::to_string(stats.shadowEdges) +

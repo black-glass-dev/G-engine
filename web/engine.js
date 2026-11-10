@@ -201,5 +201,9 @@ export async function loadEngine(canvas, wasmUrl = 'g-engine.wasm') {
     setLevel: (picture) => withText(picture, (ptr, len) => x.ge_set_level(ptr, len)),
     hud: () => JSON.parse(cstring(x.ge_hud())),
     option: (option, value) => x.ge_option(option, value),
+    /// The object at a world point (for tap-to-select in the editor); -1 when there is none.
+    objectAt: (wx, wy) => x.ge_object_at(wx, wy),
+    /// Light properties of one object (colour is 0..1 per channel).
+    setLight: (id, r, g, b, radius, intensity) => x.ge_set_light(id, r, g, b, radius, intensity),
   };
 }
