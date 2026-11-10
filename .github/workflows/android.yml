@@ -72,13 +72,13 @@ jobs:
 
       - name: Package and sign the APK
         run: |
+          trap 'echo "::error::step failed at line $LINENO: $BASH_COMMAND"' ERR
           BT="$ANDROID_HOME/build-tools/$BUILD_TOOLS"
-          rm -rf build/apk && mkdir -p build/apk/assets
+          rm -rf build/apk build/dex && mkdir -p build/apk/assets build/dex
           cp -r web build/apk/assets/web
           "$BT/aapt2" compile --dir android/res -o build/res.zip
           "$BT/aapt2" link -o build/base.apk -I "$ANDROID_HOME/platforms/$PLATFORM/android.jar" \
-            --manifest android/AndroidManifest.xml \
-            --min-sdk-version 24 --target-sdk-version 34 build/res.zip
+            --manifest android/AndroidManifest.xml build/res.zip
           "$BT/d8" --min-api 24 --lib "$ANDROID_HOME/platforms/$PLATFORM/android.jar" \
             --output build/dex build/cls.jar
           (cd build/apk && zip -q -r "$GITHUB_WORKSPACE/build/base.apk" assets)
