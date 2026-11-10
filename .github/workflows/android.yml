@@ -1,0 +1,90 @@
+# G-engine — Android APK (GitHub Actions)
+# প্রতিটা push-এ: টেস্ট চলে, তারপর একটা সই-করা APK বানে আর GitHub Releases-এ জমা হয়।
+name: Android APK
+
+on:
+  push:
+    branches: [main, arena/f31d4e31-g-engine]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Tests (headless)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          cmake --preset native
+          cmake --build build/native --parallel
+      - name: Test
+        run: ./build/native/tests/ge_tests
+
+  apk:
+    name: Build APK
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      NDK_VERSION: 26.3.11579264
+      BUILD_TOOLS: 34.0.0
+      PLATFORM: android-34
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Android SDK parts
+        run: |
+          SDKMGR="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMGR" --licenses > /dev/null 2>&1 || true
+          "$SDKMGR" "platforms;$PLATFORM" "build-tools;$BUILD_TOOLS" "ndk;$NDK_VERSION" > /dev/null
+
+      - name: Build libmain.so
+        run: |
+          cmake -S . -B build/android -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE="$ANDROID_HOME/ndk/$NDK_VERSION/build/cmake/android.toolchain.cmake" \
+            -DANDROID_ABI=arm64-v8a \
+            -DANDROID_PLATFORM=android-24 \
+            -DANDROID_STL=c++_static \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGE_BUILD_TESTS=OFF
+          cmake --build build/android --parallel
+          find build/android -name 'libmain.so' -exec cp {} build/ \;
+
+      - name: Package and sign the APK
+        run: |
+          BT="$ANDROID_HOME/build-tools/$BUILD_TOOLS"
+          rm -rf build/apk && mkdir -p build/apk/lib/arm64-v8a
+          cp build/libmain.so build/apk/lib/arm64-v8a/
+          "$BT/aapt2" compile --dir android/res -o build/res.zip
+          "$BT/aapt2" link -o build/base.apk \
+            -I "$ANDROID_HOME/platforms/$PLATFORM/android.jar" \
+            --manifest android/AndroidManifest.xml \
+            --min-sdk-version 24 --target-sdk-version 34 \
+            build/res.zip
+          (cd build/apk && zip -q -r ../base.apk lib)
+          "$BT/zipalign" -f 4 build/base.apk build/aligned.apk
+          keytool -genkeypair -noprompt -keystore build/gengine.jks \
+            -storepass android -keypass android -alias gengine \
+            -dname "CN=G-engine Test, OU=Testing, O=G-engine, C=BD" \
+            -keyalg RSA -keysize 2048 -validity 10000
+          "$BT/apksigner" sign --ks build/gengine.jks --ks-pass pass:android --key-pass pass:android \
+            --out build/g-engine.apk build/aligned.apk
+          "$BT/apksigner" verify --print-certs build/g-engine.apk
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/icon.png build/icon.png
+          cp docs/images/lit.jpg build/game.jpg
+          TAG=android-latest
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" build/g-engine.apk build/icon.png build/game.jpg --clobber
+          else
+            gh release create "$TAG" build/g-engine.apk build/icon.png build/game.jpg \
+              --title "Android টেস্ট বিল্ড — G-engine ডেমো" \
+              --notes-file android/RELEASE_NOTES.md \
+              --target "$GITHUB_SHA"
+          fi
