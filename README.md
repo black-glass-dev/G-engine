@@ -18,7 +18,9 @@
 - **কথা (Kotha) — বাক্যে গেম বানানো।** `কয়েন ছুঁলে স্কোর ১ বাড়াও` আর `when touching a coin, increase score by 1` — দুটো একই কথা; বাংলা-ইংরেজি এক স্ক্রিপ্টে মেশানোও যায়। ইঞ্জিন প্রতিটা লাইন **কীভাবে বুঝল** তা পাশে লিখে দেখায়। না বুঝলে লাইন ধরে বলে কোন শব্দে আটকেছে, বানান ভুল হলে কাছাকাছি শব্দটা দেখায়। → [ভাষার নির্দেশিকা](docs/KOTHA.md)
 - **আলো-ছায়া।** প্রতিটা ছবির সাথে normal map, চলন্ত রঙিন আলো, নরম ছায়া, HDR, bloom — পুরো দৃশ্য ১৪টা draw call-এ (OpenGL ES 3.0 / WebGL 2)। → [রেন্ডারিং কীভাবে কাজ করে](docs/RENDERING.md)
 - **পদার্থবিদ্যা।** [Box2D](https://box2d.org) v3.2 — হাঁটা, লাফ, ঠেলে বাক্স সরানো।
-- **ওয়েব প্লেয়ার ও এডিটর।** ফোনের ব্রাউজারে খেলা যায় (পর্দার বোতাম), আর পাশেই স্ক্রিপ্ট বদলে «চালাও» চাপলে সাথে সাথে ফল দেখা যায়। ইন্টারফেস বাংলা ও ইংরেজিতে।
+- **স্টুডিও — এখানেই নিজের গেম বানান।** «লেভেল বানাও» ট্যাবে ট্যাপ বা ড্র্যাগ করে মানচিত্র এঁকুন (দেয়াল, কয়েন, বাতি, দরজা…), «আচরণ লেখো» ট্যাবে প্রতিটা জিনিসের নিয়ম বাংলা বা ইংরেজি বাক্যে লিখুন, উপরের পর্দায় সাথে সাথে খেলতে দেখুন। খেলা ব্রাউজারে সংরক্ষিত থাকে, .json ফাইলে নামিয়ে বাঁধানো বা আবার লোড করা যায়। ফোনের ব্রাউজারেও সব চলে, ইন্টারফেস বাংলা ও ইংরেজিতে।
+
+![স্টুডিও — লেভেল এডিটর](docs/images/studio.jpg)
 - **নমুনা গেম।** বাতির আলোয় একটা ছোট অন্ধকূপ — কয়েন, কাঁটা, প্রহরী, দরজা। সবার আচরণ কথা-য় লেখা ([`games/demo/demo.cpp`](games/demo/demo.cpp))।
 
 ![এডিটর](docs/images/editor.jpg)
@@ -50,6 +52,10 @@ python3 tools/serve.py    # ঠিকানা দেখাবে: http://localh
 1. উপরের ছবির মতো **Assets** থেকে `g-engine.apk` নামান।
 2. ফোনে ফাইলটা খুলে ইনস্টল করুন ("অজানা উৎস" এর অনুমতি চাইলে দিন)।
 3. **G-engine** চালু করুন — বাঁ পাশে হাঁটা, ডান পাশে লাফ ও অ্যাকশন (ল্যান্ডস্কেপে চলবে)।
+
+আপনার ফোনে চালানোর ছবি (১০ নভেম্বর ২০২৬):
+
+![আসল ফোনে চালানো হয়েছে](docs/images/phone-real.jpg)
 
 সীমা: শুধু arm64-v8a ফোন (Android 7+); প্রতিটা বিল্ড নতুন করে সই করা — নতুনটা দিতে চাইলে আগেরটা আনইনস্টল করুন; আইকন আপাতত। ফোনে কতটা মসৃণ চলে সেটা এখনো মাপা হয়নি — জানালে কাজে লাগবে।
 
@@ -132,7 +138,9 @@ Android অ্যাপ · শব্দ ও সংগীত · নিজের �
 - **Kotha (কথা, "speech") — games made of sentences.** `when touching a coin, increase score by 1` and `কয়েন ছুঁলে স্কোর ১ বাড়াও` mean the same thing, and both languages can be mixed in one script. Next to every line the engine shows **how it understood it**. When it does not understand, it names the line and the word it got stuck on, and suggests the nearest word for a typo. → [Language guide](docs/KOTHA.md)
 - **Lighting.** A normal map for every sprite, moving coloured lights, soft shadows, HDR and bloom — the whole scene in 14 draw calls (OpenGL ES 3.0 / WebGL 2). → [How rendering works](docs/RENDERING.md)
 - **Physics.** [Box2D](https://box2d.org) v3.2 — walking, jumping, pushing crates.
-- **Web player and editor.** Playable in a phone browser (on-screen buttons); change a script next to the game, press "Run", and see the result at once. The interface is in Bengali and English.
+- **The studio — make your own game here.** Draw the map in the “Build the level” tab (tap or drag: walls, coins, lamps, a door…), write what each thing does in the “Write behaviour” tab in plain Bengali or English, and play it on the screen above right away. The game stays saved in the browser; download it as a .json file or load it back. Everything also works in a phone browser, in Bengali and English.
+
+![The studio — the level editor](docs/images/studio.jpg)
 - **Sample game.** A small lamp-lit dungeon with coins, spikes, a guard and a door. Everything they do is written in Kotha ([`games/demo/demo.cpp`](games/demo/demo.cpp)).
 
 ## Try it
@@ -158,6 +166,10 @@ python3 tools/serve.py    # prints the address: http://localhost:8080
 1. As in the picture above, download `g-engine.apk` from **Assets**.
 2. Open the file on the phone and install it (allow "unknown sources" if asked).
 3. Start **G-engine** — walk with the left side, jump and action on the right (it runs in landscape).
+
+A picture of it running on your phone (10 November 2026):
+
+![Running on a real phone](docs/images/phone-real.jpg)
 
 Limits: arm64-v8a phones only (Android 7+); every build is freshly signed, so uninstall the old one before installing a newer build; the icon is temporary. How smoothly it runs on a phone is still unmeasured — telling me helps.
 

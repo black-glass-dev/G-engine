@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0d12">
-  <title>G-Engine — কথায় লেখা গেম</title>
+  <title>G-Engine — নিজের গেম বানানোর ইঞ্জিন</title>
   <link rel="preload" href="fonts/hind-siliguri-bengali-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -68,22 +68,48 @@
       <h2 data-t="editorTitle"></h2>
       <p class="lead" data-t="editorLead"></p>
 
-      <div class="tabs" id="tabs" role="tablist"></div>
-      <textarea id="code" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
-
-      <div class="actions">
-        <button id="run" class="primary" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-t="run"></span>
-        </button>
-        <button id="reset" class="ghost" type="button" data-t="reset"></button>
-        <span id="status" class="status" role="status"></span>
+      <div class="project" id="project">
+        <button id="new-game" class="chip" type="button" data-t="newGame"></button>
+        <button id="sample-game" class="chip" type="button" data-t="loadSample"></button>
+        <button id="save-game" class="chip" type="button" data-t="saveGame"></button>
+        <button id="export-game" class="chip" type="button" data-t="exportGame"></button>
+        <button id="import-game" class="chip" type="button" data-t="importGame"></button>
+        <input id="import-file" type="file" accept=".json,application/json" hidden>
+        <span id="toast" class="toast" role="status"></span>
       </div>
 
-      <h3 data-t="understood"></h3>
-      <ol id="notes" class="notes"></ol>
+      <div class="panels" role="tablist">
+        <button id="panel-level" class="panel-tab" type="button" role="tab" data-t="levelTab"></button>
+        <button id="panel-behavior" class="panel-tab" type="button" role="tab" data-t="behaviorTab"></button>
+      </div>
 
-      <h3 data-t="tryThese"></h3>
-      <div id="examples" class="examples"></div>
+      <div id="level-panel">
+        <p class="lead" data-t="levelLead"></p>
+        <div class="palette" id="palette"></div>
+        <div class="grid-wrap"><div id="level-grid" class="level-grid"></div></div>
+        <h3 data-t="levelText"></h3>
+        <textarea id="level-text" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+        <p class="hint" data-t="levelHint"></p>
+      </div>
+
+      <div id="behavior-panel" hidden>
+        <div class="tabs" id="tabs" role="tablist"></div>
+        <textarea id="code" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+
+        <div class="actions">
+          <button id="run" class="primary" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-t="run"></span>
+          </button>
+          <button id="reset" class="ghost" type="button" data-t="reset"></button>
+          <span id="status" class="status" role="status"></span>
+        </div>
+
+        <h3 data-t="understood"></h3>
+        <ol id="notes" class="notes"></ol>
+
+        <h3 data-t="tryThese"></h3>
+        <div id="examples" class="examples"></div>
+      </div>
     </section>
   </main>
 

@@ -94,7 +94,7 @@
   খেলাটা শুরু থেকে শেষ পর্যন্ত খেলে জেতে
 - ✅ **স্বয়ংক্রিয় পরীক্ষা** — ইঞ্জিন: ৫১টা পরীক্ষা, ৬৮৩০টা যাচাই (মেমরি-ভুল ও undefined behaviour ধরার ব্যবস্থাসহ চালালেও পরিষ্কার);
   ব্রাউজার: ২৪টা যাচাই। চালানো: `sh tools/test.sh`, `--asan`, `--web`
-- ⬜ **আসল ফোনে চালিয়ে দেখা** — এটা আপনাকে করতে হবে: পাতাটা ফোনের ব্রাউজারে খুলে জানান ঠিকমতো দেখায় কি না আর কতটা মসৃণ চলে
+- ⬜ **আসল ফোনে চালিয়ে দেখা** — ব্রাউজার-পাতাটা ফোনে খোলা হয়নি (APK-টা চলেছে, ছবি README-তে)। GitHub Pages চালু হলে ফোনেই স্টুডিও খুলবেন
   (কীভাবে খুলবেন: [README](README.md))। গতি কম হলে মান-স্তর ঠিক করা হবে এই ধাপেই
 - **সম্পন্ন যখন:** ব্রাউজারে `ডান বোতাম চাপলে ডানে হাঁটো` লিখে চালালে চরিত্র ডানে হাঁটে, আর আলো-ছায়া পর্দায় দেখা যায় — কম্পিউটারে
   (✅ হয়েছে) এবং একটা আসল ফোনে (⬜ বাকি)
@@ -105,7 +105,7 @@
   কিন্তু কোনো আসল ডিভাইসে চলতে দেখা হয়নি
 - ✅ `android/`: Gradle ছাড়াই প্যাকেজিং — manifest, আপাতত আইকন, aapt2 + apksigner দিয়ে সই-করা APK। এখন শুধু arm64-v8a; armeabi-v7a বাকি
 - ✅ GitHub Actions: প্রতিটা push-এ টেস্ট চলে, তারপর APK বানে আর [`android-latest` রিলিজে](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest) জমা হয়
-- ⬜ ফোনে টেপ করে ইনস্টল করে চালানো — এটা আপনাকে করতে হবে: APK নামিয়ে ইনস্টল করুন, জানান ঠিকমতো চলে কি না আর কতটা মসৃণ
+- 🟡 ফোনে টেপ করে ইনস্টল করে চালানো — হয়েছে: আপনার ফোনে APK ইনস্টল ও খেলা হয়েছে (ছবি README-তে), আলো-ছায়া ও ফিজিক্স ভালো লেগেছে। বাকি: কতটা মসৃণ চলে (fps) জানানো
 - 🟡 মান-স্তর: ওয়েব প্লেয়ারে পাঁচটা স্তর আছে (ছবির ও আলোর রেজোলিউশন), ধীর চললে নিজে থেকে এক ধাপ নামে — লেখা আছে, কিন্তু
   আসল ফোনে কাজ করতে দেখা হয়নি। বাকি: Android অ্যাপে একই ব্যবস্থা, আর আসল ফোনে মেপে সীমাগুলো ঠিক করা
 - **সম্পন্ন যখন:** আপনি GitHub থেকে APK নামিয়ে ফোনে ইনস্টল করে খেলাটা ৩০+ FPS এ চালাতে পারবেন (নামানো-ইনস্টল ✅; ৩০+ FPS ⬜ বাকি)
@@ -113,7 +113,7 @@
 
 ### ধাপ ৩ — ফোনে এডিটর (L) ⬜
 লক্ষ্য: কোড না ছুঁয়ে, শুধু ফোন দিয়ে একটা লেভেল বানানো।
-- ⬜ দৃশ্য-এডিটর: আঙুল দিয়ে বস্তু বসানো/সরানো/মোছা, টাইল আঁকা, আলো বসানো ও রং-মাপ ঠিক করা
+- 🟡 দৃশ্য-এডিটর: ওয়েব স্টুডিওতে মানচিত্র এঁকা কাজ করে (ট্যাপ/ড্র্যাগ, ৯টা ব্রাশ, নতুন খেলা, সংরক্ষণ/লোড/.json)। বাকি: ফোনের অ্যাপে একই কাজ, আঙুলে বস্তু সরানো, আলোর রং-মাপ
 - 🟡 স্ক্রিপ্ট লেখা: এখন প্রতিটা *ধরনের* জিনিসের একটা স্ক্রিপ্ট, আর লেখার সময়ই টীকা ও ভুল দেখায়। বাকি: প্রতিটা বস্তুর আলাদা স্ক্রিপ্ট,
   লেখার সময় শব্দ-প্রস্তাব
 - ⬜ প্রজেক্ট সংরক্ষণ/খোলা (ফোনের ভেতরে + ফাইল হিসেবে রপ্তানি); দৃশ্যের ফাইল-ফরম্যাট (JSON) — এখন পাতা আবার খুললে এডিটরে
@@ -274,8 +274,8 @@ lighting and physics.
   plays it from start to finish and wins
 - ✅ **Automatic tests** — engine: 51 tests, 6830 checks (also clean when run with memory-error and undefined-behaviour
   checking); browser: 24 checks. Run them with `sh tools/test.sh`, `--asan`, `--web`
-- ⬜ **Tried on a real phone** — this one needs you: open the page in your phone's browser and tell me whether it looks right
-  and how smoothly it runs (how to open it: [README](README.md)). If it is slow, the quality levels get tuned in this phase
+- ⬜ **Tried on a real phone** — the browser page has not been opened on a phone yet (the APK has, picture in the README).
+  Once GitHub Pages is on, open the studio on the phone and tell me how it runs
 - **Done when:** typing `ডান বোতাম চাপলে ডানে হাঁটো` in the browser and running it makes the character walk right, with lighting and
   shadows on screen — on a computer (✅ done) and on a real phone (⬜ to do)
 
@@ -287,8 +287,8 @@ Goal: the same game runs on a phone as a native app.
   arm64-v8a only for now; armeabi-v7a to do
 - ✅ GitHub Actions: the tests run on every push, then an APK is built and published to the
   [`android-latest` release](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
-- ⬜ Installed and played on a phone — this one needs you: download the APK, install it, and tell me whether it works and
-  how smooth it is
+- 🟡 Installed and played on a phone — done: the APK installed and ran on your phone (picture in the README), lighting and
+  physics liked. To do: tell me how smooth it runs (fps)
 - 🟡 Quality levels: the web player has five (picture and light resolution) and steps down by itself when it runs slowly —
   written, but never seen working on a real phone. To do: the same in the Android app, and tuning the thresholds on real phones
 - **Done when:** you can download the APK from GitHub, install it and play the game at 30+ FPS (download & install ✅; 30+ FPS ⬜ to do)
@@ -297,7 +297,8 @@ Goal: the same game runs on a phone as a native app.
 
 ### Phase 3 — Editor on the phone (L) ⬜
 Goal: build a level with nothing but a phone, without touching code.
-- ⬜ Scene editor: place/move/delete objects with a finger, paint tiles, place lights and set their colour and size
+- 🟡 Scene editor: the web studio can draw the map already (tap/drag, 9 brushes, new game, save/load/.json). To do: the
+  same in the phone app, moving objects with a finger, light colour and size
 - 🟡 Writing scripts: today there is one script per *kind* of thing, and notes and errors appear while you type. To do: a script
   per object, word suggestions while typing
 - ⬜ Save/open projects (on the phone + export as a file); scene file format (JSON) — for now, scripts changed in the editor

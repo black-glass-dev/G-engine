@@ -1,0 +1,47 @@
+# G-engine — the studio on GitHub Pages (https://black-glass-dev.github.io/G-engine/)
+# Pages চালু করা লাগবে: repo Settings → Pages → Source: "GitHub Actions"। তারপর এই ওয়ার্কফ্লো
+# প্রতিটা push-এ স্টুডিও বানিয়ে তুলে দেয়; চাইলে "Run workflow" দিয়েও চালানো যায়।
+name: Deploy studio (GitHub Pages)
+
+on:
+  push:
+    branches: [main, arena/f31d4e31-g-engine]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the web studio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install CMake, Ninja and Zig
+        run: |
+          python3 -m pip install --user --break-system-packages cmake ninja ziglang
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Build the engine (WebAssembly)
+        run: sh tools/build_web.sh
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    # Pages এখনো চালু না হলে এই ধাপটা ব্যর্থ হয়, কিন্তু পুরো ওয়ার্কফ্লো লাল হয় না।
+    name: Deploy (needs Pages enabled in settings)
+    needs: build
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -9,7 +9,7 @@ const $ = (id) => document.getElementById(id);
 // ---- words of the page, in two languages -------------------------------------------------
 const strings = {
   bn: {
-    tagline: 'সহজ বাংলা বা ইংরেজি বাক্যে গেম বানাও',
+    tagline: 'নিজের গেম বানানোর ইঞ্জিন — লেভেল এঁকে, সহজ বাংলা বা ইংরেজি বাক্যে নিয়ম লিখে',
     other: 'English',
     score: 'স্কোর',
     jump: 'লাফ',
@@ -20,8 +20,8 @@ const strings = {
     again: 'আবার খেলো',
     won: 'জিতে গেছ!',
     lost: 'খেলা শেষ',
-    editorTitle: 'কথায় লেখো, গেম সেটাই করবে',
-    editorLead: 'নিচের বাক্যগুলো বদলাও, তারপর «চালাও» চাপো। বাংলা আর ইংরেজি — দুটোই চলে।',
+    editorTitle: 'এখানেই আপনার গেম',
+    editorLead: '«লেভেল বানাও» ট্যাবে মানচিত্র এঁকে জিনিস বসান, «আচরণ লেখো» ট্যাবে প্রতিটা জিনিসের নিয়ম লিখুন। বাংলা আর ইংরেজি — দুটোই চলে, আর উপরের পর্দায় সাথে সাথে ফল দেখা যায়।',
     run: 'চালাও',
     reset: 'আগের মতো করো',
     understood: 'ইঞ্জিন যা বুঝেছে',
@@ -36,12 +36,27 @@ const strings = {
     noWebgl: 'এই ব্রাউজারে WebGL2 নেই, তাই গেমের ছবি আঁকা যাচ্ছে না।',
     noWasm: 'ইঞ্জিনের ফাইল (g-engine.wasm) পাওয়া যায়নি। আগে tools/build_web.sh চালাও।',
     failed: 'ইঞ্জিন চালু করা গেল না। বিস্তারিত ব্রাউজারের কনসোলে আছে।',
-    footer: 'G-Engine — C++ ইঞ্জিন (WebAssembly), নিজস্ব আলো-ছায়ার রেন্ডারার, Box2D পদার্থবিদ্যা, আর «কথা» ভাষা। এই পাতায় যা চলছে, অ্যান্ড্রয়েডেও সেই একই কোড চলবে।',
+    footer: 'G-Engine — C++ ইঞ্জিন (WebAssembly), নিজস্ব আলো-ছায়ার রেন্ডারার, Box2D পদার্থবিদ্যা, আর «কথা» ভাষা। এই পাতায় যা চলছে, অ্যান্ড্রয়েডেও সেই একই কোড চলবে। আপনার খেলা ব্রাউজারে সংরক্ষিত থাকে; .json ফাইলে নামিয়ে বাঁধানো বা আবার লোড করা যায়।',
     labels: { left: 'বামে', right: 'ডানে', jump: 'লাফ', action: 'অ্যাকশন' },
+    newGame: 'নতুন খেলা',
+    loadSample: 'নমুনা খেলা',
+    saveGame: 'সংরক্ষণ',
+    exportGame: 'নামাও (.json)',
+    importGame: 'লোড করো',
+    saved: 'সংরক্ষিত হলো',
+    saveFailed: 'সংরক্ষণ করা গেল না',
+    loaded: 'লোড হলো',
+    badFile: 'ফাইলটা পড়া গেল না',
+    levelTab: 'লেভেল বানাও',
+    behaviorTab: 'আচরণ লেখো',
+    levelLead: 'ট্যাপ বা ড্র্যাগ করে মানচিত্র এঁকুন — দেয়াল, কয়েন, বাতি, দরজা… উপরের পর্দায় সাথে সাথে দেখা যাবে।',
+    levelText: 'লেভেলের ছবি (সরাসরিও লিখতে পারেন)',
+    levelHint: 'প্রতিটা ঘর ১×১ মিটার। খেলোয়াড় P একটাই থাকবে — নতুন P বসালে আগেরটা সরে যায়।',
+    brushes: { '#': 'দেয়াল', '.': 'ফাঁকা', 'P': 'খেলোয়াড়', 'G': 'প্রহরী', 'c': 'কয়েন', '^': 'কাঁটা', 'B': 'বাক্স', 'D': 'দরজা', 'L': 'বাতি' },
     names: {},
   },
   en: {
-    tagline: 'Make games with plain Bengali or English sentences',
+    tagline: 'Your game-making engine — draw a level, write the rules in plain Bengali or English',
     other: 'বাংলা',
     score: 'Score',
     jump: 'Jump',
@@ -52,8 +67,8 @@ const strings = {
     again: 'Play again',
     won: 'You won!',
     lost: 'Game over',
-    editorTitle: 'Say it in words, the game does it',
-    editorLead: 'Change the sentences below, then press Run. Bengali and English both work.',
+    editorTitle: 'Make your game here',
+    editorLead: 'Draw the map in the “Build the level” tab and write what each thing does in the “Write behaviour” tab. Both Bengali and English work, and the screen above shows the result right away.',
     run: 'Run',
     reset: 'Restore original',
     understood: 'What the engine understood',
@@ -68,8 +83,23 @@ const strings = {
     noWebgl: 'This browser has no WebGL2, so the game cannot be drawn.',
     noWasm: 'The engine file (g-engine.wasm) is missing. Run tools/build_web.sh first.',
     failed: 'The engine could not start. Details are in the browser console.',
-    footer: 'G-Engine — a C++ engine (WebAssembly), its own lighting renderer, Box2D physics and the "Kotha" language. The code running on this page is the same code that will run on Android.',
+    footer: 'G-Engine — a C++ engine (WebAssembly), its own lighting renderer, Box2D physics and the "Kotha" language. The code running on this page is the same code that runs on Android. Your game stays saved in the browser; download it as a .json file to share or load it back.',
     labels: { left: 'Left', right: 'Right', jump: 'Jump', action: 'Action' },
+    newGame: 'New game',
+    loadSample: 'Sample game',
+    saveGame: 'Save',
+    exportGame: 'Download .json',
+    importGame: 'Load file',
+    saved: 'Saved',
+    saveFailed: 'Could not save',
+    loaded: 'Loaded',
+    badFile: 'That file could not be read',
+    levelTab: 'Build the level',
+    behaviorTab: 'Write behaviour',
+    levelLead: 'Tap or drag to draw the map — walls, coins, lamps, a door… The screen above shows it right away.',
+    levelText: 'The level picture (you can also type it)',
+    levelHint: 'Each cell is 1×1 meter. There is only one player P — placing a new one removes the old.',
+    brushes: { '#': 'Wall', '.': 'Empty', 'P': 'Player', 'G': 'Guard', 'c': 'Coin', '^': 'Spikes', 'B': 'Crate', 'D': 'Door', 'L': 'Lamp' },
     // The things in the game are named in Bengali; on the English page the tabs show both.
     names: { 'খেলোয়াড়': 'Player', 'প্রহরী': 'Guard', 'কয়েন': 'Coin', 'দরজা': 'Door', 'বাতি': 'Lamp', 'বাক্স': 'Crate', 'কাঁটা': 'Spikes' },
   },
@@ -97,6 +127,7 @@ function applyLanguage() {
   for (const el of document.querySelectorAll('[data-t]')) el.textContent = t(el.dataset.t);
   for (const el of document.querySelectorAll('[data-label]')) el.setAttribute('aria-label', t('labels')[el.dataset.label]);
   $('lang').textContent = t('other');
+  renderPalette();
   if (engine) {
     renderTabs();
     renderNotes();
@@ -420,6 +451,257 @@ $('again').addEventListener('click', () => engine && engine.restart());
 $('opt-light').addEventListener('change', (event) => engine && engine.option(Option.lighting, event.target.checked ? 1 : 0));
 $('opt-bloom').addEventListener('change', (event) => engine && engine.option(Option.bloom, event.target.checked ? 1 : 0));
 
+// ---- the studio: level editor and saved games -------------------------------------------
+const brushes = [
+  { ch: '#', cls: 'w' }, { ch: '.', cls: '' }, { ch: 'P', cls: 'P' }, { ch: 'G', cls: 'G' },
+  { ch: 'c', cls: 'c' }, { ch: '^', cls: 's' }, { ch: 'B', cls: 'B' }, { ch: 'D', cls: 'D' }, { ch: 'L', cls: 'L' },
+];
+const cellClass = (ch) => { const b = brushes.find((x) => x.ch === ch); return b ? b.cls : ''; };
+const cellLabel = (ch) => ('PGc^BDL'.includes(ch) ? ch : '');
+let demoLevel = '';
+let demoScripts = [];
+let levelRows = [];
+let brush = '#';
+let painting = false;
+let painted = '';
+let applyTimer = 0;
+let toastTimer = 0;
+
+function toast(text) {
+  const el = $('toast');
+  el.textContent = text;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.textContent = ''; }, 1800);
+}
+
+function parseLevel(text) {
+  const rows = text.replace(/\r/g, '').split('\n');
+  while (rows.length > 1 && rows[rows.length - 1] === '') rows.pop();
+  return rows.length ? rows : [''];
+}
+
+const levelText = () => levelRows.join('\n') + '\n';
+
+function renderPalette() {
+  $('palette').replaceChildren(...brushes.map((b) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'brush';
+    button.dataset.brush = b.ch;
+    button.setAttribute('aria-pressed', brush === b.ch ? 'true' : 'false');
+    const sw = document.createElement('span');
+    sw.className = 'sw ' + b.cls;
+    const key = document.createElement('span');
+    key.className = 'k';
+    key.textContent = b.ch;
+    const name = document.createElement('span');
+    name.textContent = t('brushes')[b.ch] || '';
+    button.append(sw, key, name);
+    button.addEventListener('click', () => { brush = b.ch; renderPalette(); });
+    return button;
+  }));
+}
+
+function makeCell(ch, r, c) {
+  const cell = document.createElement('div');
+  cell.className = 'cell ' + cellClass(ch);
+  cell.dataset.r = r;
+  cell.dataset.c = c;
+  cell.textContent = cellLabel(ch);
+  return cell;
+}
+
+function renderGrid() {
+  const grid = $('level-grid');
+  const cols = Math.max(1, ...levelRows.map((row) => row.length));
+  grid.style.setProperty('--cols', cols);
+  const cells = [];
+  levelRows.forEach((row, r) => {
+    for (let c = 0; c < cols; ++c) cells.push(makeCell(row[c] || '.', r, c));
+  });
+  grid.replaceChildren(...cells);
+}
+
+function patchCell(r, c, ch) {
+  const cell = $('level-grid').querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+  if (!cell) { renderGrid(); return; }
+  cell.className = 'cell ' + cellClass(ch);
+  cell.textContent = cellLabel(ch);
+}
+
+function scheduleApply() {
+  clearTimeout(applyTimer);
+  applyTimer = setTimeout(() => { if (engine) engine.setLevel(levelText()); }, 350);
+}
+
+function setCell(r, c, ch) {
+  while (levelRows.length <= r) levelRows.push('');
+  if (ch === 'P') {
+    levelRows = levelRows.map((row) => row.replace(/P/g, '.'));
+    renderGrid();
+  }
+  let row = levelRows[r];
+  while (row.length <= c) row += '.';
+  levelRows[r] = row.slice(0, c) + ch + row.slice(c + 1);
+  if (ch !== 'P') patchCell(r, c, ch);
+  $('level-text').value = levelText();
+  scheduleApply();
+}
+
+function syncLevelFromEngine() {
+  if (!engine) return;
+  levelRows = parseLevel(engine.level());
+  $('level-text').value = levelText();
+  renderGrid();
+}
+
+// painting: tap or drag; each cell becomes the chosen brush
+const gridEl = $('level-grid');
+function paintAt(event) {
+  const el = document.elementFromPoint(event.clientX, event.clientY);
+  if (!el || !el.classList || !el.classList.contains('cell')) return;
+  const key = el.dataset.r + ',' + el.dataset.c;
+  if (key === painted) return;
+  painted = key;
+  setCell(Number(el.dataset.r), Number(el.dataset.c), brush);
+}
+gridEl.addEventListener('pointerdown', (event) => {
+  event.preventDefault();
+  painting = true;
+  painted = '';
+  try { gridEl.setPointerCapture(event.pointerId); } catch { /* not capturable */ }
+  paintAt(event);
+});
+gridEl.addEventListener('pointermove', (event) => { if (painting) paintAt(event); });
+for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+  gridEl.addEventListener(type, () => { painting = false; painted = ''; });
+}
+gridEl.addEventListener('contextmenu', (event) => event.preventDefault());
+
+$('level-text').addEventListener('input', () => {
+  levelRows = parseLevel($('level-text').value);
+  renderGrid();
+  scheduleApply();
+});
+
+// the two panels: drawing the level, and writing behaviour
+function showPanel(which) {
+  const level = which === 'level';
+  $('level-panel').hidden = !level;
+  $('behavior-panel').hidden = level;
+  $('panel-level').setAttribute('aria-selected', level ? 'true' : 'false');
+  $('panel-behavior').setAttribute('aria-selected', level ? 'false' : 'true');
+  if (level) syncLevelFromEngine();
+}
+$('panel-level').addEventListener('click', () => showPanel('level'));
+$('panel-behavior').addEventListener('click', () => showPanel('behavior'));
+
+// games are { level, scripts: [{name, source}] } — in the browser, and as a .json file
+function gameState() {
+  return { app: 'g-engine', version: 1, level: levelText(), scripts: scripts.map((s) => ({ name: s.name, source: s.draft })) };
+}
+
+function loadGameState(state) {
+  if (!engine || !state || typeof state.level !== 'string' || !Array.isArray(state.scripts)) return false;
+  engine.setLevel(state.level.endsWith('\n') ? state.level : state.level + '\n');
+  scripts = engine.scripts().map((s) => {
+    const found = state.scripts.find((x) => x && x.name === s.name);
+    const source = found && typeof found.source === 'string' ? found.source : s.source;
+    return { name: s.name, original: source, installed: source, draft: source };
+  });
+  scripts.forEach((s, i) => {
+    if (!engine.setScript(i, s.source).ok) {
+      const fallback = engine.scripts()[i].source;
+      scripts[i] = { name: s.name, original: fallback, installed: fallback, draft: fallback };
+    }
+  });
+  syncLevelFromEngine();
+  selectScript(0);
+  return true;
+}
+
+function readSavedGame() {
+  try {
+    const raw = localStorage.getItem('ge-game');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+const starterLevel = () => [
+  '########################',
+  '#......................#',
+  '#......................#',
+  '#......................#',
+  '#.......L..............#',
+  '#......................#',
+  '#..P...................#',
+  '########################',
+].join('\n') + '\n';
+
+const starterScripts = () => [
+  { name: 'খেলোয়াড়', source: '# খেলোয়াড় — নিয়ম এখানে লেখো\nডান বোতাম চাপলে ডানে হাঁটো\nবাম বোতাম চাপলে বামে হাঁটো\nলাফ বোতাম চাপলে লাফ দাও\n' },
+  { name: 'প্রহরী', source: '# প্রহরী\n' },
+  { name: 'কয়েন', source: '# কয়েন\nখেলোয়াড়কে ছুঁলে মুছে যাও\n' },
+  { name: 'দরজা', source: '# দরজা\n' },
+  { name: 'বাতি', source: '# বাতি\n' },
+  { name: 'বাক্স', source: '# বাক্স\n' },
+];
+
+$('new-game').addEventListener('click', () => {
+  if (!engine) return;
+  loadGameState({ level: starterLevel(), scripts: starterScripts() });
+  applyLanguage();
+  toast(t('loaded'));
+});
+$('sample-game').addEventListener('click', () => {
+  if (!engine) return;
+  engine.setLevel(demoLevel);
+  scripts = demoScripts.map((s) => ({ name: s.name, original: s.source, installed: s.source, draft: s.source }));
+  scripts.forEach((s, i) => engine.setScript(i, s.source));
+  syncLevelFromEngine();
+  selectScript(0);
+  applyLanguage();
+  toast(t('loaded'));
+});
+$('save-game').addEventListener('click', () => {
+  if (!engine) return;
+  try {
+    localStorage.setItem('ge-game', JSON.stringify(gameState()));
+    toast(t('saved'));
+  } catch {
+    toast(t('saveFailed'));
+  }
+});
+$('export-game').addEventListener('click', () => {
+  if (!engine) return;
+  const blob = new Blob([JSON.stringify(gameState(), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'g-engine-game.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+});
+$('import-game').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    const ok = loadGameState(JSON.parse(await file.text()));
+    if (ok) {
+      applyLanguage();
+      toast(t('loaded'));
+    } else {
+      toast(t('badFile'));
+    }
+  } catch {
+    toast(t('badFile'));
+  }
+});
+
 // ---- start -------------------------------------------------------------------------------
 async function start() {
   applyLanguage();
@@ -440,10 +722,18 @@ async function start() {
 
   applyQuality();
 
-  scripts = engine.scripts().map((s) => ({ name: s.name, original: s.source, installed: s.source, draft: s.source }));
+  demoLevel = engine.level();
+  demoScripts = engine.scripts().map((s) => ({ name: s.name, source: s.source }));
+  scripts = demoScripts.map((s) => ({ name: s.name, original: s.source, installed: s.source, draft: s.source }));
   new ResizeObserver(resizeCanvas).observe(screen);
   window.addEventListener('resize', resizeCanvas);
-  selectScript(0);
+  const saved = readSavedGame();
+  if (saved && loadGameState(saved)) {
+    toast(t('loaded'));
+  } else {
+    selectScript(0);
+  }
+  showPanel('level');
   applyLanguage();
 
   // Real elapsed time (not the timestamp handed to the callback, which some browsers

@@ -128,6 +128,9 @@ console.log('desktop');
   });
   check(bad.length === 0, 'all example sentences compile', bad.join(' | '));
 
+  // the rest writes scripts, so the behaviour panel must be open
+  await page.click('#panel-behavior');
+
   // editing: a script the engine understands
   await page.evaluate(() => {
     const code = document.getElementById('code');
@@ -238,6 +241,7 @@ console.log('phone');
 {
   const page = await open(390, 780, 2, true);
   let h = await hud(page);
+  await page.click('#panel-behavior');
   const layout = await page.evaluate(() => {
     const r = (id) => { const b = document.getElementById(id).getBoundingClientRect(); return { top: b.top, bottom: b.bottom }; };
     return { screen: r('screen'), pad: r('pad'), code: r('code'), scroll: document.documentElement.scrollWidth, width: innerWidth };
@@ -277,6 +281,40 @@ console.log('phone');
   await page.close();
 }
 
+// ------------------------------------------------------------------------------------------
+console.log('studio');
+{
+  const page = await open(1280, 820, 1, false);
+  await play(page, 0.3);
+  check(await page.$eval('#level-panel', (el) => !el.hidden), 'the level editor is what you see first');
+
+  // painting the map changes the game
+  await page.click('[data-brush="c"]');
+  await page.click('.cell[data-r="2"][data-c="4"]');
+  await page.click('.cell[data-r="2"][data-c="5"]');
+  await new Promise((r) => setTimeout(r, 800));
+  const rows = (await page.evaluate(() => window.ge.level())).split('\n');
+  check(rows[2][4] === 'c' && rows[2][5] === 'c', 'painted cells change the level', rows[2]);
+
+  // a new game starts from a blank room
+  await page.click('#new-game');
+  await new Promise((r) => setTimeout(r, 500));
+  const blank = await page.evaluate(() => window.ge.level());
+  const blankRows = blank.split('\n').filter(Boolean);
+  check(blankRows.length === 8 && blankRows[0].startsWith('###') && blank.includes('P'), 'new game makes a blank room', `${blankRows.length} rows`);
+
+  // saving puts the game in the browser; a reload brings it back
+  await page.click('#save-game');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  for (let i = 0; i < 40 && !(await page.evaluate(() => !!window.ge)); ++i) await new Promise((r) => setTimeout(r, 250));
+  await play(page, 0.3);
+  const restored = await page.evaluate(() => window.ge.level());
+  check(restored === blank, 'the saved game comes back after a reload', `${restored.split('\n').filter(Boolean).length} rows`);
+  check((await page.evaluate(() => window.ge.hud().state)) === 'playing', 'the restored game is running');
+  check((await page.evaluate(() => window.ge.gl.getError())) === 0, 'no WebGL error in the studio');
+}
+
+// ------------------------------------------------------------------------------------------
 check(problems.length === 0, 'no errors or WebGL warnings in the browser console', problems.slice(0, 5).join(' | '));
 await browser.close();
 console.log(failures === 0 ? '\nall web checks passed' : `\n${failures} web check(s) FAILED`);
