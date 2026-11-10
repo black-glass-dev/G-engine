@@ -1,0 +1,35 @@
+# Build output
+build/
+out/
+dist/
+cmake-build-*/
+*.o
+*.obj
+*.a
+*.so
+*.wasm
+
+# Tooling caches
+node_modules/
+.cache/
+.venv/
+__pycache__/
+*.pyc
+.zig-cache/
+zig-cache/
+zig-out/
+
+# Android / Gradle
+.gradle/
+local.properties
+*.apk
+*.aab
+.cxx/
+captures/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

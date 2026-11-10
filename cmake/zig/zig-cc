@@ -1,0 +1,6 @@
+#!/bin/sh
+# Wrapper so CMake can use `zig cc` as a normal C compiler.
+# Uses $ZIG if set, else `zig` on PATH, else the pip package (`pip install ziglang`).
+if [ -n "$ZIG" ]; then exec "$ZIG" cc "$@"; fi
+if command -v zig >/dev/null 2>&1; then exec zig cc "$@"; fi
+exec python3 -m ziglang cc "$@"

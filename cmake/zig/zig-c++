@@ -1,0 +1,6 @@
+#!/bin/sh
+# Wrapper so CMake can use `zig c++` as a normal C++ compiler.
+# Uses $ZIG if set, else `zig` on PATH, else the pip package (`pip install ziglang`).
+if [ -n "$ZIG" ]; then exec "$ZIG" c++ "$@"; fi
+if command -v zig >/dev/null 2>&1; then exec zig c++ "$@"; fi
+exec python3 -m ziglang c++ "$@"

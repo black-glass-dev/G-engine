@@ -1,0 +1,13 @@
+{
+  "name": "g-engine-tools",
+  "private": true,
+  "description": "Browser test for the G-Engine web player (tools/web_test.mjs).",
+  "type": "module",
+  "scripts": {
+    "web-test": "node web_test.mjs"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "^153.0.0",
+    "puppeteer-core": "^25.16.0"
+  }
+}

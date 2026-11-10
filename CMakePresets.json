@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 22, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "native",
+      "displayName": "PC (headless): unit tests + simulation",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "RelWithDebInfo" }
+    },
+    {
+      "name": "native-asan",
+      "displayName": "PC (headless) with sanitizers",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native-asan",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "GE_SANITIZE": "ON" }
+    },
+    {
+      "name": "web",
+      "displayName": "Web (WebAssembly + WebGL2) via zig",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/web",
+      "toolchainFile": "${sourceDir}/cmake/toolchain-wasm-zig.cmake",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release", "GE_BUILD_TESTS": "OFF" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "native", "configurePreset": "native" },
+    { "name": "native-asan", "configurePreset": "native-asan" },
+    { "name": "web", "configurePreset": "web" }
+  ],
+  "testPresets": [
+    { "name": "native", "configurePreset": "native", "output": { "outputOnFailure": true } },
+    { "name": "native-asan", "configurePreset": "native-asan", "output": { "outputOnFailure": true } }
+  ]
+}

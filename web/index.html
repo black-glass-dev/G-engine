@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d12">
+  <title>G-Engine — কথায় লেখা গেম</title>
+  <link rel="preload" href="fonts/hind-siliguri-bengali-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">G</span>
+      <div>
+        <h1>G-Engine</h1>
+        <p data-t="tagline"></p>
+      </div>
+    </div>
+    <button id="lang" class="chip" type="button"></button>
+  </header>
+
+  <main>
+    <section class="stage">
+      <div class="screen" id="screen">
+        <canvas id="canvas" tabindex="0"></canvas>
+        <div class="hud">
+          <div class="pill"><span class="coin" aria-hidden="true"></span><span data-t="score"></span> <b id="score"></b></div>
+          <div class="pill dim" id="fps"></div>
+        </div>
+        <div id="bubbles"></div>
+        <div class="overlay" id="overlay" hidden>
+          <div class="card">
+            <h2 id="overlay-title"></h2>
+            <button id="again" class="primary" type="button" data-t="again"></button>
+          </div>
+        </div>
+        <div class="message" id="message"></div>
+      </div>
+
+      <div class="pad" id="pad">
+        <div class="cluster">
+          <button type="button" data-button="left" data-label="left">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 4.5 7 12l8.5 7.5z"/></svg>
+          </button>
+          <button type="button" data-button="right" data-label="right">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 4.5 17 12l-8.5 7.5z"/></svg>
+          </button>
+        </div>
+        <p class="keys" data-t="keys"></p>
+        <div class="cluster">
+          <button type="button" data-button="action" data-label="action" class="small">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.5 6.2L21 10l-5 4.3L17.6 21 12 17.3 6.4 21 8 14.3 3 10l6.5-.8z"/></svg>
+          </button>
+          <button type="button" data-button="jump" data-label="jump" class="wide" data-t="jump"></button>
+        </div>
+      </div>
+
+      <div class="options">
+        <label class="switch"><input type="checkbox" id="opt-light" checked><span data-t="lighting"></span></label>
+        <label class="switch"><input type="checkbox" id="opt-bloom" checked><span data-t="bloom"></span></label>
+        <button id="restart" class="chip" type="button" data-t="restart"></button>
+        <span id="stats" class="stats"></span>
+      </div>
+    </section>
+
+    <section class="editor">
+      <h2 data-t="editorTitle"></h2>
+      <p class="lead" data-t="editorLead"></p>
+
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <textarea id="code" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+
+      <div class="actions">
+        <button id="run" class="primary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-t="run"></span>
+        </button>
+        <button id="reset" class="ghost" type="button" data-t="reset"></button>
+        <span id="status" class="status" role="status"></span>
+      </div>
+
+      <h3 data-t="understood"></h3>
+      <ol id="notes" class="notes"></ol>
+
+      <h3 data-t="tryThese"></h3>
+      <div id="examples" class="examples"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p data-t="footer"></p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Wrapper so CMake can use `zig ar` as a normal archiver.
+# Uses $ZIG if set, else `zig` on PATH, else the pip package (`pip install ziglang`).
+if [ -n "$ZIG" ]; then exec "$ZIG" ar "$@"; fi
+if command -v zig >/dev/null 2>&1; then exec zig ar "$@"; fi
+exec python3 -m ziglang ar "$@"
