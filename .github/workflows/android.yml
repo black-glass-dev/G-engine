@@ -5,6 +5,9 @@ on:
     branches: [main, arena/**]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   APP_NAME: g-engine
 
@@ -96,6 +99,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          trap 'echo "::error::publish step failed at line $LINENO: $BASH_COMMAND"' ERR
           cp android/icon.png build/icon.png
           cp docs/images/lit.jpg build/game.jpg
           cp docs/images/download.jpg build/download.jpg
