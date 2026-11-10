@@ -1,30 +1,40 @@
-# G-engine — Android টেস্ট বিল্ড (ডেমো)
+# G-Engine mobile
 
-![আইকন](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/icon.png)
+## সরাসরি ডাউনলোড (APK)
 
-ছোট্ট একটা লণ্ডন-আলোর অন্ধকূপ — সব আচরণই বাংলা বাক্যে লেখা (ভাষা: `docs/KOTHA.md`)।
+**[g-engine.apk ডাউনলোড করুন](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/g-engine.apk)**
 
-![খেলার ছবি](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/game.jpg)
+ফোনে ডাউনলোড করে "Install unknown apps" চালু করে ইনস্টল করুন — হয়ে গেল **G-Engine Studio**, অর্থাৎ গেম ইঞ্জিন নিজেই।
 
-## ডাউনলোড ও ইনস্টল
+## এই অ্যাপে কী আছে
 
-![ডাউনলোডের পদ্ধতি](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/download.jpg)
+এটা আর শুধু ডেমো নয় — **গেম ইঞ্জিনটা নিজেই** ফোনে চলে:
 
-1. নিচে **Assets** থেকে `g-engine.apk` ডাউনলোড করুন (ক্রোম হলে "আপনার ডিভাইসে ফাইলগুলো ডাউনলোড হচ্ছে" বলে জিজ্ঞাসা করলে চালিয়ে যান)।
-2. ফোনে ফাইলটা খুলুন। "অজানা উৎস" থেকে ইনস্টলের অনুমতি চাইলে দিন।
-3. **G-engine** অ্যাপটা খুলুন — ল্যান্ডস্কেপে চলবে।
+- **লেভেল এডিটর** — ডান পাশের প্যালেট থেকে ব্রাশ বেছে নিয়ে টেপে/টেনে মানচিত্র আঁকুন
+- **কথা স্ক্রিপ্ট এডিটর** — "যখন খেলোয়াড় কয়েন ছোঁয়, তখন কয়েন লুকাও। স্কোর ১ বাড়াও।"
+- **নতুন গেম / নমুনা গেম** — খালি ঘর বা ডেমো দিয়ে শুরু করুন
+- **সেভ** — খেলা ও সম্পাদনা ফোনেই থাকে; পরের বার ঠিক যেখানে ছিলেন সেখান থেকে
+- **Export / Import (.json)** — নিজের গেম ফাইল হিসেবে বাঁচান বা শেয়ার করুন
 
-## চালানোর নিয়ম
+সব কিছু অফলাইনে চলে (কোনো ইন্টারনেট লাগে না; অনুমতিও কেবল ভেতরের সার্ভারের জন্য)।
 
-- বাঁ পাশের দুই জায়গা: বামে / ডানে হাঁটা
-- ডান পাশের নিচ: লাফ; তার উপরে: অ্যাকশন
-- ব্লুটুথ কীবোর্ড থাকলে তীর-চিহ্ন, Space ও E/Enter-ও কাজ করে
+## কীভাবে খেলবেন
 
-লক্ষ্য: ৫টা কয়েন জোগাড় করে ডান দিকের দরজা খুলুন।
+আঁকার সময় `P` হলো খেলোয়াড়ের শুরু, `G` গার্ড, `c` কয়েন, `D` দরজা, `L` বাতি। খেলার সময় স্ক্রিনের নিচের বোতামগুলো — বামে/ডানে, লাফ, কাজ। সম্পূর্ণ নির্দেশিকা [docs/KOTHA.md](../docs/KOTHA.md)।
 
-## জানা সীমাবদ্ধতা
+## স্ক্রিনশট
 
-- একটা সময়ের টেস্ট বিল্ড এটা; আইকনও আপাতত।
-- শুধু **arm64-v8a** (৬৪-বিট ARM) ফোনের জন্য, Android 7 বা তার পরে।
-- প্রতিটা বিল্ড নতুন করে সই করা হয় — নতুন বিল্ড দিতে চাইলে আগেরটা আনইনস্টল করে নিন।
-- ফোনে কতটা মসৃণ চলে তা এখনো মাপা হয়নি; আপনার ফলাফল জানালে ধাপ ১ শেষ হবে।
+ডাউনলোড পদ্ধতি নিচের ছবিতে ([download.jpg](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/download.jpg))। ফোনের সত্যিকারের স্ক্রিনশট ও গেম প্লে ছবি রিলিজে [game.jpg](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/game.jpg)।
+
+## English
+
+This is **G-Engine Studio** — the game engine itself on your phone: draw a level with the
+palette, write the rules in Kotha ("When player touches coin, hide the coin. Increase score
+by 1."), play, save, and export games as `.json` files. Everything runs offline: the same
+C++ engine as the desktop build, compiled to WebAssembly inside a WebView. Install
+**[g-engine.apk](https://github.com/black-glass-dev/G-engine/releases/download/android-latest/g-engine.apk)**
+(allow "install unknown apps" first). Signed with a build-time keystore — for updates,
+uninstall the old version first.
+
+The same studio also runs in any browser at `sh tools/serve.py` → http://localhost:8080/
+(web/ folder), and every push builds a fresh APK with GitHub Actions.

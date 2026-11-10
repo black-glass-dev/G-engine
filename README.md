@@ -9,7 +9,7 @@
 | ![আলো-ছায়া চালু](docs/images/lit.jpg) | ![আলো-ছায়া বন্ধ](docs/images/unlit.jpg) |
 
 > **অবস্থা:** একেবারে শুরুর দিক — [রোডম্যাপের](ROADMAP.md) ধাপ ১ (প্রথম চলন্ত নমুনা)। এখন ব্রাউজারে চলে।
-> Android অ্যাপ (APK)-এর টেস্ট বিল্ড [রিলিজে](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest) রাখা আছে; কোনো আসল ফোনে চালিয়ে দেখা এখনো হয়নি।
+> Android অ্যাপ (APK)-এ এখন **G-Engine Studio** — গেম ইঞ্জিনটা নিজেই ফোনে ([রিলিজে](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)); [আসল ফোনে](docs/images/phone-real.jpg) চলেছে।
 
 ---
 
@@ -21,6 +21,7 @@
 - **স্টুডিও — এখানেই নিজের গেম বানান।** «লেভেল বানাও» ট্যাবে ট্যাপ বা ড্র্যাগ করে মানচিত্র এঁকুন (দেয়াল, কয়েন, বাতি, দরজা…), «আচরণ লেখো» ট্যাবে প্রতিটা জিনিসের নিয়ম বাংলা বা ইংরেজি বাক্যে লিখুন, উপরের পর্দায় সাথে সাথে খেলতে দেখুন। খেলা ব্রাউজারে সংরক্ষিত থাকে, .json ফাইলে নামিয়ে বাঁধানো বা আবার লোড করা যায়। ফোনের ব্রাউজারেও সব চলে, ইন্টারফেস বাংলা ও ইংরেজিতে।
 
 ![স্টুডিও — লেভেল এডিটর](docs/images/studio.jpg)
+- **এজেন্ট সংস্করণ।** কোনো পর্দা ছাড়াই এআই এজেন্টরা এই ইঞ্জিনে গেম বানাতে পারে: `ge-game` কমান্ড-লাইন টুল (`new`/`check`/`simulate`/`pack`), সাথে একটা MCP সার্ভার — নিজেরা লিখে `check`-এ ভুল ধরায়, `simulate`-এ খেলে ফল দেখে। → [AGENTS.md](AGENTS.md)
 - **নমুনা গেম।** বাতির আলোয় একটা ছোট অন্ধকূপ — কয়েন, কাঁটা, প্রহরী, দরজা। সবার আচরণ কথা-য় লেখা ([`games/demo/demo.cpp`](games/demo/demo.cpp))।
 
 ![এডিটর](docs/images/editor.jpg)
@@ -43,7 +44,7 @@ python3 tools/serve.py    # ঠিকানা দেখাবে: http://localh
 - **খেলা:** ← → হাঁটা, Space লাফ, E অ্যাকশন; ফোনে পর্দার বোতাম।
 - `web/g-engine.wasm` একটা build-ফল, তাই git-এ রাখা হয়নি। build-এর পর `web/` ফোল্ডারটা যেকোনো static হোস্টে তুলে দিলেই চলে।
 
-## Android APK (টেস্ট বিল্ড)
+## Android APK — G-Engine Studio
 
 [![ডাউনলোডের পদ্ধতি](docs/images/download.jpg)](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
 
@@ -51,7 +52,7 @@ python3 tools/serve.py    # ঠিকানা দেখাবে: http://localh
 
 1. উপরের ছবির মতো **Assets** থেকে `g-engine.apk` নামান।
 2. ফোনে ফাইলটা খুলে ইনস্টল করুন ("অজানা উৎস" এর অনুমতি চাইলে দিন)।
-3. **G-engine** চালু করুন — বাঁ পাশে হাঁটা, ডান পাশে লাফ ও অ্যাকশন (ল্যান্ডস্কেপে চলবে)।
+3. **G-Engine** চালু করুন — এটাই পুরো স্টুডিও: টেপে/টেনে লেভেল আঁকুন, কথা-য় নিয়ম লিখুন, সাথে সাথে খেলুন, সেভ থাকে (ল্যান্ডস্কেপে চলবে, অফলাইনে)।
 
 আপনার ফোনে চালানোর ছবি (১০ নভেম্বর ২০২৬):
 
@@ -131,7 +132,7 @@ Android অ্যাপ · শব্দ ও সংগীত · নিজের �
 # English
 
 > **Status:** very early — phase 1 of the [roadmap](ROADMAP.md) (the first playable slice). It runs in the browser today.
-> A test build of the Android app (APK) sits in the [releases](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest); nothing has been run on a real phone so far.
+> The Android app (APK) is now **G-Engine Studio** — the engine itself on the phone ([releases](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)); it has [run on a real phone](docs/images/phone-real.jpg).
 
 ## What is here
 
@@ -141,6 +142,7 @@ Android অ্যাপ · শব্দ ও সংগীত · নিজের �
 - **The studio — make your own game here.** Draw the map in the “Build the level” tab (tap or drag: walls, coins, lamps, a door…), write what each thing does in the “Write behaviour” tab in plain Bengali or English, and play it on the screen above right away. The game stays saved in the browser; download it as a .json file or load it back. Everything also works in a phone browser, in Bengali and English.
 
 ![The studio — the level editor](docs/images/studio.jpg)
+- **Agent edition.** AI agents can build games with this engine without a screen: the `ge-game` command-line tool (`new`/`check`/`simulate`/`pack`) plus an MCP server — write scripts, get errors from `check`, see what happened in `simulate`. → [AGENTS.md](AGENTS.md)
 - **Sample game.** A small lamp-lit dungeon with coins, spikes, a guard and a door. Everything they do is written in Kotha ([`games/demo/demo.cpp`](games/demo/demo.cpp)).
 
 ## Try it
@@ -157,7 +159,7 @@ python3 tools/serve.py    # prints the address: http://localhost:8080
 - **Playing:** ← → walk, Space jump, E action; on a phone, the on-screen buttons.
 - `web/g-engine.wasm` is a build product and therefore not in git. After building, the `web/` folder can be copied to any static host.
 
-## Android APK (test build)
+## Android APK — G-Engine Studio
 
 [![How to download](docs/images/download.jpg)](https://github.com/black-glass-dev/G-engine/releases/tag/android-latest)
 
@@ -165,7 +167,7 @@ python3 tools/serve.py    # prints the address: http://localhost:8080
 
 1. As in the picture above, download `g-engine.apk` from **Assets**.
 2. Open the file on the phone and install it (allow "unknown sources" if asked).
-3. Start **G-engine** — walk with the left side, jump and action on the right (it runs in landscape).
+3. Start **G-Engine** — this is the whole studio: draw the level by tapping and dragging, write the rules in Kotha, play right away, everything is saved (landscape, works offline).
 
 A picture of it running on your phone (10 November 2026):
 

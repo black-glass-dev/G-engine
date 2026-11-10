@@ -113,7 +113,7 @@
 
 ### ধাপ ৩ — ফোনে এডিটর (L) ⬜
 লক্ষ্য: কোড না ছুঁয়ে, শুধু ফোন দিয়ে একটা লেভেল বানানো।
-- 🟡 দৃশ্য-এডিটর: ওয়েব স্টুডিওতে মানচিত্র এঁকা কাজ করে (ট্যাপ/ড্র্যাগ, ৯টা ব্রাশ, নতুন খেলা, সংরক্ষণ/লোড/.json)। বাকি: ফোনের অ্যাপে একই কাজ, আঙুলে বস্তু সরানো, আলোর রং-মাপ
+- 🟡 দৃশ্য-এডিটর: ওয়েব স্টুডিওতে মানচিত্র এঁকা কাজ করে (ট্যাপ/ড্র্যাগ, ৯টা ব্রাশ, নতুন খেলা, সংরক্ষণ/লোড/.json); ফোনের অ্যাপেও (G-Engine Studio APK) একই স্টুডিও। বাকি: আঙুলে বস্তু সরানো, আলোর রং-মাপ
 - 🟡 স্ক্রিপ্ট লেখা: এখন প্রতিটা *ধরনের* জিনিসের একটা স্ক্রিপ্ট, আর লেখার সময়ই টীকা ও ভুল দেখায়। বাকি: প্রতিটা বস্তুর আলাদা স্ক্রিপ্ট,
   লেখার সময় শব্দ-প্রস্তাব
 - ⬜ প্রজেক্ট সংরক্ষণ/খোলা (ফোনের ভেতরে + ফাইল হিসেবে রপ্তানি); দৃশ্যের ফাইল-ফরম্যাট (JSON) — এখন পাতা আবার খুললে এডিটরে
@@ -135,6 +135,7 @@
 - ⬜ আঞ্চলিক ও চলিত বানানের সহনশীলতা, Banglish (`dane hato`) — ঐচ্ছিক
 - ⬜ ঐচ্ছিক: অনলাইন AI সহকারী, যে মুক্ত বাংলা বর্ণনা থেকে কথা-স্ক্রিপ্ট লিখে দেয় (ইঞ্জিন তার উপর নির্ভর করবে না)
 - 🟡 ভাষা-নির্দেশিকা (বাংলা + ইংরেজি): v0.1-এর জন্য আছে ([docs/KOTHA.md](docs/KOTHA.md)); বাকি: উদাহরণ-সংগ্রহ
+- 🟡 এজেন্ট সংস্করণ — এআই এজেন্টরা যেন ইঞ্জিন দিয়ে গেম বানাতে পারে: `ge-game` কমান্ড-লাইন (new/check/simulate/pack) ও একটা MCP সার্ভার ([AGENTS.md](AGENTS.md))
 
 ### ধাপ ৬ — আরও উন্নত আলো (M) ⬜
 - ⬜ পরোক্ষ আলো (global illumination, radiance cascades পদ্ধতি) — আলো দেয়ালে লেগে ছড়াবে
@@ -297,8 +298,8 @@ Goal: the same game runs on a phone as a native app.
 
 ### Phase 3 — Editor on the phone (L) ⬜
 Goal: build a level with nothing but a phone, without touching code.
-- 🟡 Scene editor: the web studio can draw the map already (tap/drag, 9 brushes, new game, save/load/.json). To do: the
-  same in the phone app, moving objects with a finger, light colour and size
+- 🟡 Scene editor: the web studio can draw the map already (tap/drag, 9 brushes, new game, save/load/.json); the phone app
+  (the G-Engine Studio APK) has the same studio. To do: moving objects with a finger, light colour and size
 - 🟡 Writing scripts: today there is one script per *kind* of thing, and notes and errors appear while you type. To do: a script
   per object, word suggestions while typing
 - ⬜ Save/open projects (on the phone + export as a file); scene file format (JSON) — for now, scripts changed in the editor
@@ -320,6 +321,8 @@ Goal: build a level with nothing but a phone, without touching code.
 - ⬜ Tolerance for regional and colloquial spellings, Banglish (`dane hato`) — optional
 - ⬜ Optional: an online AI assistant that writes Kotha from a free-form description (the engine will not depend on it)
 - 🟡 Language guide (Bengali + English): exists for v0.1 ([docs/KOTHA.md](docs/KOTHA.md)); to do: an example collection
+- 🟡 Agent edition — so AI agents can build games with the engine: the `ge-game` command line (new/check/simulate/pack) and
+  an MCP server ([AGENTS.md](AGENTS.md))
 
 ### Phase 6 — More advanced lighting (M) ⬜
 - ⬜ Indirect light (global illumination, radiance cascades) — light bounces off walls

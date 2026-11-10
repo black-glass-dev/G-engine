@@ -24,6 +24,15 @@ cmake --preset "$preset" >/dev/null
 cmake --build "build/$preset"
 "./build/$preset/tests/ge_tests" | grep -v '^\[ ok \]'
 
+# Agent CLI smoke: a tiny game created, checked, played headless and packed.
+smoke="$(mktemp -d)"
+"./build/$preset/bin/ge-game" new "$smoke/game" >/dev/null
+"./build/$preset/bin/ge-game" check "$smoke/game" >/dev/null
+"./build/$preset/bin/ge-game" simulate "$smoke/game" --seconds 2 >/dev/null
+"./build/$preset/bin/ge-game" pack "$smoke/game" -o "$smoke/game.json" >/dev/null
+rm -rf "$smoke"
+echo "[ ok ] agent CLI smoke"
+
 if [ "$web" = 1 ]; then
     sh tools/build_web.sh
     port="${GE_TEST_PORT:-8137}"
