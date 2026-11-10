@@ -123,9 +123,15 @@ JSON as the CLI prints.
 | `games/demo/` | the demo game — a worked example of a full game |
 | `docs/KOTHA.md` | the language guide (Bengali + English) |
 | `docs/RENDERING.md` | the lighting model |
+| `ROADMAP.md` | what gets built next and how (research-based, big batches) |
 | `tests/` | `ge_tests` — run it after engine changes |
 | `tools/game_cli.cpp` | the agent CLI source |
 | `tools/mcp_server.py` | this MCP server |
+
+**This CLI is the main workbench of the project** (see `ROADMAP.md`, rule 2): every engine
+feature is built and proven here first, and the same input always gives the same result
+(deterministic replay is checked in `tools/test.sh`). When you add engine behaviour, add it
+to `ge-game` too.
 
 The same engine also ships as a web studio (`web/`, `sh tools/build_web.sh`) and as an
 Android studio app (`android/`, built by GitHub Actions). Games you build with the CLI

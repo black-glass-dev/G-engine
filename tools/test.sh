@@ -24,14 +24,17 @@ cmake --preset "$preset" >/dev/null
 cmake --build "build/$preset"
 "./build/$preset/tests/ge_tests" | grep -v '^\[ ok \]'
 
-# Agent CLI smoke: a tiny game created, checked, played headless and packed.
+# Agent CLI smoke: a tiny game created, checked, played headless and packed —
+# and the same input twice must give the exact same result (deterministic replay).
 smoke="$(mktemp -d)"
 "./build/$preset/bin/ge-game" new "$smoke/game" >/dev/null
 "./build/$preset/bin/ge-game" check "$smoke/game" >/dev/null
-"./build/$preset/bin/ge-game" simulate "$smoke/game" --seconds 2 >/dev/null
+"./build/$preset/bin/ge-game" simulate "$smoke/game" --seconds 2 --input "0.5:right:1,1:jump:0.2" > "$smoke/a.json"
+"./build/$preset/bin/ge-game" simulate "$smoke/game" --seconds 2 --input "0.5:right:1,1:jump:0.2" > "$smoke/b.json"
+cmp "$smoke/a.json" "$smoke/b.json"
 "./build/$preset/bin/ge-game" pack "$smoke/game" -o "$smoke/game.json" >/dev/null
 rm -rf "$smoke"
-echo "[ ok ] agent CLI smoke"
+echo "[ ok ] agent CLI smoke (deterministic replay)"
 
 if [ "$web" = 1 ]; then
     sh tools/build_web.sh

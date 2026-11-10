@@ -88,6 +88,25 @@ bool writeFile(const std::string& path, const std::string& data) {
     return out.good();
 }
 
+/// mkdir -p: creates every missing folder of the path.
+bool makeDirs(const std::string& dir) {
+    std::string p;
+    for (std::size_t i = 0; i <= dir.size(); i++) {
+        if (i == dir.size() || dir[i] == '/') {
+            if (p.empty() || p == "/") {
+                // nothing to create yet
+            } else {
+                struct stat st;
+                if (stat(p.c_str(), &st) != 0 && mkdir(p.c_str(), 0755) != 0) return false;
+            }
+            if (i < dir.size()) p += '/';
+        } else {
+            p += dir[i];
+        }
+    }
+    return true;
+}
+
 struct GameFile {
     std::string name;   // the thing it talks about (the file name without .kotha)
     std::string file;
@@ -150,7 +169,7 @@ int cmdNew(const std::string& dir) {
         std::fprintf(stderr, "ge-game: %s already exists\n", dir.c_str());
         return 2;
     }
-    if (mkdir(dir.c_str(), 0755) != 0) {
+    if (!makeDirs(dir)) {
         std::fprintf(stderr, "ge-game: cannot create %s\n", dir.c_str());
         return 2;
     }
