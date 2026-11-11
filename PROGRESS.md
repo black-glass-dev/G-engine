@@ -4,7 +4,7 @@
 
 ## 📌 বর্তমান অবস্থা
 
-**মাইলস্টোন: M1 — উইন্ডো ও ত্রিভুজ** (কোড লেখা ও পুশ হয়েছে; CI যাচাই চলছে — নিচে দেখো)
+**মাইলস্টোন: M1 — উইন্ডো ও ত্রিভুজ** ✅ সম্পন্ন — CI `build-cli` ও `build-android` দুটোই সবুজ (commit `f2ecaaa`)
 **ব্রাঞ্চ:** `arena/857c23fa-g-engine` · **PR:** #1 (main-এর সাথে) · D-001 দেখো
 
 ## ✅ M0 — সম্পন্ন (CI সবুজ)
@@ -23,17 +23,21 @@
 ## 🧪 টেস্ট
 
 - লোকাল (Linux, g++ 12): শেডার-রিরাইট ও GL-loader-এর "মিসিং ফাংশন" চেক ম্যানুয়ালি পাস; renderer/shader/gl_api `-Wall -Wextra -Wpedantic` warning-মুক্ত কম্পাইল। (লোকালে X11 ডেভ প্যাকেজ নেই, তাই পুরো SDL বিল্ড লোকালি হয়নি — D-015।)
-- doctest ইউনিট টেস্ট: শেডার-রিরাইট ৪ কেস যোগ হয়েছে (মোট কেস বাড়বে; সঠিক সংখ্যা CI রানের ফলাফলে)।
-- CI `build-cli` ও `build-android`: পুশের পরে যাচাই। ফলাফল নিচে আপডেট হবে।
+- CI `build-cli` (commit `f2ecaaa`): configure ✅ · build ✅ · ctest ✅ (৭টি টেস্ট কেস: লগ ২, ভার্সন ১, শেডার ৪) · Xvfb-তে `lumen_player --frames 120` ✅ · artifacts: `lumen-cli-linux`, `lumen-player-linux`।
+- CI `build-android` (commit `f2ecaaa`): SDK/NDK/CMake ✅ · Gradle 8.9 ✅ · `:app:assembleDebug` ✅ · artifact `lumen2d-debug-apk` (≈2.5 MB, arm64-v8a + x86_64)।
+- ব্যর্থতার ইতিহাস (শিক্ষা): প্রথমে SDL3 configure ব্যর্থ — X11 এক্সটেনশন `libxfixes-dev`, `libxtst-dev` বাদ ছিল (SDL `SDL_missing_dependency` ফatal)। ঠিক করা হয়েছে। সাথে `setup-android` ও `setup-gradle` সরিয়ে runner-এর প্রি-ইনস্টল SDK + সরাসরি Gradle ডাউনলোড।
+- **ডিবাগ নোট:** sandbox থেকে GitHub Actions-এর লগ/আর্টিফ্যাক্ট ব্লব-স্টোরেজ থেকে ডাউনলোড হয় না (আউটবাউন্ড অনুমতি নেই)। তাই ব্যর্থ CI-র কারণ জানতে `configure-diagnostics` artifact ও `gh run view --json jobs` ব্যবহার করতে হয়।
 
 ## ⏭️ পরের ধাপ
 
-- M1 CI সবুজ নিশ্চিত করা (লাল হলে ঠিক করা — নিয়ম অনুযায়ী এটাই অগ্রাধিকার)।
+- M1-এর Android APK এখনো শুধু debug-signed ও শুধু প্লেয়ার — এডিটর-সহ APK M9-এ।
+- ডিভাইসে APK চালিয়ে দেখা (emulator/ফোন) — এখন শুধু বিল্ড যাচাই হয়েছে, ডিভাইস রান নয়।
 - M2 — 2D রেন্ডারার: স্প্রাইট ব্যাচিং, টেক্সচার অ্যাটলাস, ক্যামেরা, বিটম্যাপ টেক্সট, পারফ কাউন্টার ওভারলে।
 
 ## ⚠️ অসম্পূর্ণ / জানা সীমাবদ্ধতা
 
-- Android-এ অ্যাপ ব্যাকগ্রাউন্ডে গেলে GL কনটেক্সট রিস্টোর পরীক্ষিত নয় (SDL3 লাইফসাইকেল হ্যান্ডলিং পরে যাচাই হবে)।
+- Android Activity পজ/রিজিউমে GL কনটেক্সট পুনরুদ্ধার ডিভাইসে যাচাই হয়নি।
+
 - Windows-এ `APIENTRY` (`__stdcall`) সাপোর্ট কোডে আছে, কিন্তু Windows বিল্ড CI-তে এখনো নেই।
 - CLI-এর `new`, `validate`, `run`, `test`, `build`, `pack`, `docs` এখনো নেই (M3/M10)।
 - লাইটিং, ফিজিক্স, স্ক্রিপ্ট VM, এডিটর, অডিও — এখনো শুরু হয়নি।
