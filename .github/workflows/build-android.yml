@@ -1,0 +1,53 @@
+name: build-android
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:      # called by release.yml on tag pushes
+
+jobs:
+  debug-apk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android SDK / NDK / CMake (runner's preinstalled SDK)
+        run: |
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then SDKMANAGER="$(ls -d $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager | head -1)"; fi
+          echo "using $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" --install "platforms;android-34" "build-tools;34.0.0" \
+            "ndk;26.1.10909125" "cmake;3.22.1"
+
+      - name: Fetch SDL3 (Android template + native sources)
+        run: git clone --depth 1 --branch release-3.4.20 https://github.com/libsdl-org/SDL android/third_party/SDL
+
+      - name: Install Gradle 8.9 (direct download)
+        run: |
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.9-bin.zip
+          sudo unzip -q /tmp/gradle.zip -d /opt
+          echo "/opt/gradle-8.9/bin" >> "$GITHUB_PATH"
+
+      - name: Build debug-signed APK
+        run: gradle -p android :app:assembleDebug --stacktrace --no-daemon
+
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/Lumen2D-android-debug.apk
+          sha256sum dist/Lumen2D-android-debug.apk > dist/Lumen2D-android-debug.apk.sha256
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lumen2d-android-apk
+          path: dist/*
+          if-no-files-found: error
