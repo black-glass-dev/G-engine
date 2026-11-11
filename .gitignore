@@ -1,0 +1,31 @@
+# build outputs
+build/
+build-*/
+cmake-build-*/
+out/
+dist/
+*.o
+*.obj
+*.exe
+compile_commands.json
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# generated artifacts & large binaries (keep out of Git; use releases / LFS policy later)
+artifacts/
+screenshots/
+*.lumenpack
