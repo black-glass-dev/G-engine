@@ -29,3 +29,5 @@ android/local.properties
 artifacts/
 screenshots/
 *.lumenpack
+android/third_party/
+android/.gradle/

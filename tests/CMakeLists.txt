@@ -15,6 +15,7 @@ add_executable(lumen_tests
   test_main.cpp
   test_log.cpp
   test_version.cpp
+  test_shader.cpp
 )
 target_link_libraries(lumen_tests PRIVATE lumen::lumen doctest::doctest)
 

@@ -37,3 +37,23 @@
 
 ## D-010 (2026-11-11) — ডিস্প্লে/শেডার: OpenGL ES 3.0 (Android) / OpenGL 3.3 (desktop)
 - **কারণ:** স্পেসিফিকেশনে লক করা; সব শেডার GLSL ES 3.00 সোর্স হিসেবে লেখা হবে এবং ডেস্কটপে `#version` রূপান্তর হবে। Vulkan এখন নয়।
+
+---
+
+## D-011 (2026-11-11, M1) — GL লোডার: নিজস্ব X-macro function table (glad নয়)
+- **কারণ:** প্রয়োজন ~35টি ফাংশন। `SDL_GL_GetProcAddress` দিয়ে একই কোড-পথ ডেস্কটপ GL 3.3 core ও Android GLES 3.0-এ কাজ করে। glad জেনারেটেড ফাইল বাড়ায় এবং দুই API-র জন্য আলাদা লোডার লাগে। GL হেডারও ইনক্লুড করা হয় না — তাই ইঞ্জিন GL dev প্যাকেজ ছাড়াও কম্পাইল হয়।
+- **ফাইল:** `engine/include/lumen/render/gl_api.hpp`, `engine/src/render/gl_api.cpp`।
+
+## D-012 (2026-11-11, M1) — শেডার: GLSL ES 3.00 উৎস, ডেস্কটপে অটো-রিরাইট
+- **কারণ:** স্পেসিফিকেশনে লক করা। `adapt_shader_source()` প্রথম লাইনের `#version` বদলায় (ES → `330 core`); এটি pure ফাংশন বলে ইউনিট টেস্ট আছে।
+
+## D-013 (2026-11-11, M1) — SDL3 ভার্সন `release-3.4.20`, ডেস্কটপে static, Android-এ shared
+- **কারণ:** সর্বশেষ স্থিতিশীল 3.4.x টাগ। ডেস্কটপে static (একটি বাইনারি), Android-এ `SDLActivity` `libSDL3.so` লোড করে, তাই shared বাধ্যতামূলক।
+- **Android Java সোর্স:** SDL-এর `android-project/.../org/libsdl/app/*.java` CI-তে একই টাগ থেকে `android/third_party/SDL`-এ ক্লোন হয় (gitignored; কপি করে Git-এ রাখা হয়নি)। আমাদের নিজের Activity শুধু `getLibraries()` ওভাররাইড করে — নিজস্ব native_activity গ্লু নেই।
+
+## D-014 (2026-11-11, M1) — Android: একটি debug-signed APK, release-signing secret নেই
+- **কারণ:** ডিবাগ কী Android Gradle নিজেই তৈরি করে, তাই কোনো সিক্রেট লাগে না। Release/keystore সাইনিং পরে আলাদাভাবে যোগ হবে — তখন GitHub Secrets লাগবে (এটা স্পেসের বাইরের সিক্রেট, তাই তখন জানানো হবে)।
+- **Gradle:** wrapper jar কমিট করা হয়নি; CI `gradle-version: 8.9` দিয়ে সরাসরি Gradle চালায়। AGP 8.5.2, compileSdk 34, minSdk 24, NDK 26.1.10909125, ABI: arm64-v8a + x86_64।
+
+## D-015 (2026-11-11, M1) — লোকাল ডেভ-এ X11 হেডার নেই; SDL-সহ যাচাই CI-তে
+- **কারণ:** sandbox-এর apt মিরর বন্ধ, তাই `libx11-dev`/Xvfb লোকালি পাওয়া যায়নি। SDL X11/Wayland ছাড়া configure ব্যর্থ করে। তাই: GL-নির্ভর নয় এমন অংশ (loader, shader, renderer) লোকালি কম্পাইল ও যাচাই হয়েছে; পুরো বিল্ড, `ctest`, Xvfb-তে `lumen_player --frames 120` স্মোক টেস্ট এবং APK বিল্ড GitHub Actions-এ হয়।
