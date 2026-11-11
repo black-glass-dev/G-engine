@@ -32,13 +32,14 @@ jobs:
       - name: Fetch SDL3 (Android template + native sources)
         run: git clone --depth 1 --branch release-3.4.20 https://github.com/libsdl-org/SDL android/third_party/SDL
 
-      - name: Cache Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: "8.9"
+      - name: Install Gradle 8.9 (direct download)
+        run: |
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.9-bin.zip
+          sudo unzip -q /tmp/gradle.zip -d /opt
+          echo "/opt/gradle-8.9/bin" >> "$GITHUB_PATH"
 
       - name: Build debug-signed APK
-        run: gradle -p android :app:assembleDebug --stacktrace
+        run: gradle -p android :app:assembleDebug --stacktrace --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
