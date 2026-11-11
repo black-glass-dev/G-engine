@@ -20,12 +20,13 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK / NDK / CMake
+      - name: Install Android SDK / NDK / CMake (runner's preinstalled SDK)
         run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager --install "platforms;android-34" "build-tools;34.0.0" \
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then SDKMANAGER="$(ls -d $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager | head -1)"; fi
+          echo "using $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" --install "platforms;android-34" "build-tools;34.0.0" \
             "ndk;26.1.10909125" "cmake;3.22.1"
 
       - name: Fetch SDL3 (Android template + native sources)

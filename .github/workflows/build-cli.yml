@@ -25,7 +25,21 @@ jobs:
           key: deps-${{ runner.os }}-${{ hashFiles('tests/CMakeLists.txt', 'CMakeLists.txt') }}
 
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        run: |
+          set -o pipefail
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release 2>&1 | tee configure.log
+
+      - name: Upload configure diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: configure-diagnostics
+          path: |
+            configure.log
+            build/CMakeFiles/*.log
+            build/CMakeFiles/CMakeError.log
+            build/CMakeFiles/CMakeOutput.log
+          if-no-files-found: warn
 
       - name: Build
         run: cmake --build build --parallel
