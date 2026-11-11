@@ -1,0 +1,67 @@
+name: release
+
+# Tag push (v*) → builds the Android debug APK and the Linux agent CLI, then publishes a
+# GitHub Release with both files and direct download links.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cli:
+    uses: ./.github/workflows/build-cli.yml
+
+  apk:
+    uses: ./.github/workflows/build-android.yml
+
+  publish:
+    needs: [cli, apk]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lumen-cli-linux-x86_64
+          path: release-files
+
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lumen2d-android-apk
+          path: release-files
+
+      - name: Name files with tag version
+        run: |
+          cd release-files
+          TAG="${GITHUB_REF_NAME}"
+          mv Lumen2D-android-debug.apk "Lumen2D-${TAG}-android-debug.apk"
+          mv Lumen2D-android-debug.apk.sha256 "Lumen2D-${TAG}-android-debug.apk.sha256"
+          mv lumen-cli-linux-x86_64.tar.gz "lumen-cli-${TAG}-linux-x86_64.tar.gz"
+          mv lumen-cli-linux-x86_64.tar.gz.sha256 "lumen-cli-${TAG}-linux-x86_64.tar.gz.sha256"
+          ls -la
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Lumen2D ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## ডাউনলোড
+
+            - **📱 মোবাইল (Android APK, debug-signed):** `Lumen2D-${{ github.ref_name }}-android-debug.apk`
+              - ফোনে ইনস্টল করতে "Unknown sources / অজানা উৎস থেকে ইনস্টল" চালু করতে হবে।
+              - এটি debug-signed; Play Store-এর জন্য release সাইনিং আলাদাভাবে লাগবে।
+            - **🤖 এজেন্ট / CLI (Linux x86_64):** `lumen-cli-${{ github.ref_name }}-linux-x86_64.tar.gz`
+              - ব্যবহার: `tar -xzf lumen-cli-*.tar.gz && ./lumen version`
+
+            SHA-256 চেকসাম ফাইলগুলো যাচাইয়ের জন্য রয়েছে।
+          files: |
+            release-files/*

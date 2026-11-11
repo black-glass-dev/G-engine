@@ -2,8 +2,10 @@ name: build-cli
 
 on:
   push:
+    branches: ["**"]
   pull_request:
   workflow_dispatch:
+  workflow_call:      # called by release.yml on tag pushes
 
 jobs:
   build-and-test:
@@ -50,11 +52,20 @@ jobs:
       - name: Headless smoke test (player renders 120 frames under Xvfb)
         run: xvfb-run -a ./build/player/lumen_player --frames 120
 
+      - name: Package CLI for download
+        run: |
+          mkdir -p dist
+          cp build/agentkit/lumen dist/lumen
+          tar -C dist -czf lumen-cli-linux-x86_64.tar.gz lumen
+          sha256sum lumen-cli-linux-x86_64.tar.gz > lumen-cli-linux-x86_64.tar.gz.sha256
+
       - name: Upload CLI artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lumen-cli-linux
-          path: build/agentkit/lumen
+          name: lumen-cli-linux-x86_64
+          path: |
+            lumen-cli-linux-x86_64.tar.gz
+            lumen-cli-linux-x86_64.tar.gz.sha256
 
       - name: Upload player artifact
         uses: actions/upload-artifact@v4
