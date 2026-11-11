@@ -2,6 +2,13 @@
 
 > এই ফাইল পড়ে যেকোনো সেশন ঠিক এখান থেকে শুরু করতে পারবে। প্রতিটি মাইলস্টোন শেষে আপডেট হবে।
 
+## 📦 রিলিজ v0.1.0 (ডাউনলোড)
+
+- রিলিজ পেজ: https://github.com/black-glass-dev/G-engine/releases/tag/v0.1.0
+- 📱 Android APK (debug-signed): https://github.com/black-glass-dev/G-engine/releases/download/v0.1.0/Lumen2D-v0.1.0-android-debug.apk
+- 🤖 Agent CLI (Linux x86_64): https://github.com/black-glass-dev/G-engine/releases/download/v0.1.0/lumen-cli-v0.1.0-linux-x86_64.tar.gz
+- SHA-256 ফাইল দুটিরও লিংক রিলিজ পেজে আছে।
+
 ## 📌 বর্তমান অবস্থা
 
 **মাইলস্টোন: M1 — উইন্ডো ও ত্রিভুজ** ✅ সম্পন্ন — CI `build-cli` ও `build-android` দুটোই সবুজ (commit `f2ecaaa`)

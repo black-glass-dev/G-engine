@@ -57,3 +57,9 @@
 
 ## D-015 (2026-11-11, M1) — লোকাল ডেভ-এ X11 হেডার নেই; SDL-সহ যাচাই CI-তে
 - **কারণ:** sandbox-এর apt মিরর বন্ধ, তাই `libx11-dev`/Xvfb লোকালি পাওয়া যায়নি। SDL X11/Wayland ছাড়া configure ব্যর্থ করে। তাই: GL-নির্ভর নয় এমন অংশ (loader, shader, renderer) লোকালি কম্পাইল ও যাচাই হয়েছে; পুরো বিল্ড, `ctest`, Xvfb-তে `lumen_player --frames 120` স্মোক টেস্ট এবং APK বিল্ড GitHub Actions-এ হয়।
+
+## D-016 (2026-11-11) — রিলিজ: `v*` ট্যাগে একটি GitHub Release, দুটি ফাইল
+- **সিদ্ধান্ত:** `release.yml` ট্যাগ পুশে `build-cli.yml` ও `build-android.yml` (এখন `workflow_call`-সমর্থিত) কল করে, তারপর একটি `publish` জব রিলিজ বানায়। রিলিজে থাকে: Android debug APK (`Lumen2D-<tag>-android-debug.apk`) ও Linux x86_64 CLI (`lumen-cli-<tag>-linux-x86_64.tar.gz`), প্রতিটির সাথে SHA-256 ফাইল।
+- **কারণ:** আগে দুই ওয়ার্কফ্লো একই ট্যাগে রিলিজে ফাইল যোগ করতে চাইত — রেস কন্ডিশনের ঝুঁকি। এখন একটিই রিলিজ-স্রষ্টা। ব্রাঞ্চ পুশে শুধু বিল্ড ও টেস্ট চলে, ট্যাগে আলাদা করে দুবার চলে না।
+- **সীমাবদ্ধতা:** CLI এখনো শুধু Linux x86_64। Windows/macOS CLI এবং release-সাইনড APK পরের ধাপে; release সাইনিং-এর জন্য GitHub Secrets লাগবে (এই স্পেসের বাইরের সিক্রেট)।
+- **ট্যাগ:** `v0.1.0` (commit `ee50f3d`)। পূর্বের `android-latest` রিলিজ অপরিবর্তিত রাখা হয়েছে।
