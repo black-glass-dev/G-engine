@@ -22,8 +22,17 @@
 
 ## 🧪 টেস্ট
 
+### লোকাল টেস্ট-রান (সেশন ৩, Linux, g++ 12, CMake 4, Ninja)
+- লোকালি X11 নেই, তাই SDL বিল্ড হয়েছে `-DSDL_UNIX_CONSOLE_BUILD=ON -DSDL_X11=OFF` সহ (dummy video; GL উইন্ডো নয়)।
+- doctest: **13 টেস্ট কেস, 32 অ্যাসারশন — সব পাস।** (লগ ২, ভার্সন ১, শেডার ৪, GL loader/renderer ৬)
+- `ctest`: **16/16 পাস** — ২টি CLI টেস্ট (`cli_version`, `cli_unknown_command_fails`), ১টি প্লেয়ার আর্গুমেন্ট টেস্ট।
+- `lumen_player --frames 5` ডিসপ্লে ছাড়া: স্পষ্ট এরর `SDL_Init failed: No available video device` + exit 1 (ক্র্যাশ নয়)।
+- GL-নির্ভর পাথ (আসল শেডার কম্পাইল, ত্রিভুজ আঁকা) লোকালি চলে না — CI-র Xvfb স্মোক টেস্টে যাচাই হয়।
+
+### পূর্ববর্তী CI (commit `f2ecaaa`)
+
 - লোকাল (Linux, g++ 12): শেডার-রিরাইট ও GL-loader-এর "মিসিং ফাংশন" চেক ম্যানুয়ালি পাস; renderer/shader/gl_api `-Wall -Wextra -Wpedantic` warning-মুক্ত কম্পাইল। (লোকালে X11 ডেভ প্যাকেজ নেই, তাই পুরো SDL বিল্ড লোকালি হয়নি — D-015।)
-- CI `build-cli` (commit `f2ecaaa`): configure ✅ · build ✅ · ctest ✅ (৭টি টেস্ট কেস: লগ ২, ভার্সন ১, শেডার ৪) · Xvfb-তে `lumen_player --frames 120` ✅ · artifacts: `lumen-cli-linux`, `lumen-player-linux`।
+- CI `build-cli` (commit `f2ecaaa`): configure ✅ · build ✅ · ctest ✅ (তখন ৭টি টেস্ট কেস) · Xvfb-তে `lumen_player --frames 120` ✅ · artifacts: `lumen-cli-linux`, `lumen-player-linux`।
 - CI `build-android` (commit `f2ecaaa`): SDK/NDK/CMake ✅ · Gradle 8.9 ✅ · `:app:assembleDebug` ✅ · artifact `lumen2d-debug-apk` (≈2.5 MB, arm64-v8a + x86_64)।
 - ব্যর্থতার ইতিহাস (শিক্ষা): প্রথমে SDL3 configure ব্যর্থ — X11 এক্সটেনশন `libxfixes-dev`, `libxtst-dev` বাদ ছিল (SDL `SDL_missing_dependency` ফatal)। ঠিক করা হয়েছে। সাথে `setup-android` ও `setup-gradle` সরিয়ে runner-এর প্রি-ইনস্টল SDK + সরাসরি Gradle ডাউনলোড।
 - **ডিবাগ নোট:** sandbox থেকে GitHub Actions-এর লগ/আর্টিফ্যাক্ট ব্লব-স্টোরেজ থেকে ডাউনলোড হয় না (আউটবাউন্ড অনুমতি নেই)। তাই ব্যর্থ CI-র কারণ জানতে `configure-diagnostics` artifact ও `gh run view --json jobs` ব্যবহার করতে হয়।
